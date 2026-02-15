@@ -1,0 +1,499 @@
+region,date_locality,unique,sample,depth,depth_upper,depth_lower,thickness,thick.not.5,sampling_unique
+Gulf of Panama,Contadora,BF18-1-11-2.5,BF18-1-11,2.5,0,5,5,no,BF18-1-11-5
+Gulf of Panama,Contadora,BF18-1-11-7.5,BF18-1-11,7.5,5,10,5,no,BF18-1-11-10
+Gulf of Panama,Contadora,BF18-1-11-12.5,BF18-1-11,12.5,10,15,5,no,BF18-1-11-15
+Gulf of Panama,Contadora,BF18-1-11-17.5,BF18-1-11,17.5,15,20,5,no,BF18-1-11-20
+Gulf of Panama,Contadora,BF18-1-11-22.5,BF18-1-11,22.5,20,25,5,no,BF18-1-11-25
+Gulf of Panama,Contadora,BF18-1-11-27.5,BF18-1-11,27.5,25,30,5,no,BF18-1-11-30
+Gulf of Panama,Contadora,BF18-1-11-32.5,BF18-1-11,32.5,30,35,5,no,BF18-1-11-35
+Gulf of Panama,Contadora,BF18-1-11-37.5,BF18-1-11,37.5,35,40,5,no,BF18-1-11-40
+Gulf of Panama,Contadora,BF18-1-11-42.5,BF18-1-11,42.5,40,45,5,no,BF18-1-11-45
+Gulf of Panama,Contadora,BF18-1-11-47.5,BF18-1-11,47.5,45,50,5,no,BF18-1-11-50
+Gulf of Panama,Contadora,BF18-1-11-52.5,BF18-1-11,52.5,50,55,5,no,BF18-1-11-55
+Gulf of Panama,Contadora,BF18-1-11-57.5,BF18-1-11,57.5,55,60,5,no,BF18-1-11-60
+Gulf of Panama,Contadora,BF18-1-11-63,BF18-1-11,63,60,66,6,yes,BF18-1-11-66
+Gulf of Panama,Contadora,BF18-1-11-68.5,BF18-1-11,68.5,66,71,5,no,BF18-1-11-71
+Gulf of Panama,Contadora,BF18-1-11-73.5,BF18-1-11,73.5,71,76,5,no,BF18-1-11-76
+Gulf of Panama,Contadora,BF18-1-11-78.5,BF18-1-11,78.5,76,81,5,no,BF18-1-11-81
+Gulf of Panama,Contadora,BF18-1-11-83.5,BF18-1-11,83.5,81,86,5,no,BF18-1-11-86
+Gulf of Panama,Contadora,BF18-1-11-88.5,BF18-1-11,88.5,86,91,5,no,BF18-1-11-91
+Gulf of Panama,Contadora,BF18-1-11-93.5,BF18-1-11,93.5,91,96,5,no,BF18-1-11-96
+Gulf of Panama,Contadora,BF18-1-11-98.5,BF18-1-11,98.5,96,101,5,no,BF18-1-11-101
+Gulf of Panama,Contadora,BF18-1-11-103.5,BF18-1-11,103.5,101,106,5,no,BF18-1-11-106
+Gulf of Panama,Contadora,BF18-1-11-108.5,BF18-1-11,108.5,106,111,5,no,BF18-1-11-111
+Gulf of Panama,Contadora,BF18-1-11-113.5,BF18-1-11,113.5,111,116,5,no,BF18-1-11-116
+Gulf of Panama,Contadora,BF18-1-11-118.5,BF18-1-11,118.5,116,121,5,no,BF18-1-11-121
+Gulf of Panama,Contadora,BF18-1-11-123.5,BF18-1-11,123.5,121,126,5,no,BF18-1-11-126
+Gulf of Panama,Contadora,BF18-1-11-128.5,BF18-1-11,128.5,126,131,5,no,BF18-1-11-131
+Gulf of Panama,Contadora,BF18-1-11-133.5,BF18-1-11,133.5,131,136,5,no,BF18-1-11-136
+Gulf of Panama,Contadora,BF18-1-11-138.5,BF18-1-11,138.5,136,141,5,no,BF18-1-11-141
+Gulf of Panama,Contadora,BF18-1-11-143.5,BF18-1-11,143.5,141,146,5,no,BF18-1-11-146
+Gulf of Panama,Contadora,BF18-1-11-148.5,BF18-1-11,148.5,146,151,5,no,BF18-1-11-151
+Gulf of Panama,Contadora,BF18-1-11-153.5,BF18-1-11,153.5,151,156,5,no,BF18-1-11-156
+Gulf of Panama,Contadora,BF18-1-11-158.5,BF18-1-11,158.5,156,161,5,no,BF18-1-11-161
+Gulf of Panama,Contadora,BF18-1-11-163.5,BF18-1-11,163.5,161,166,5,no,BF18-1-11-166
+Gulf of Panama,Contadora,BF18-1-11-168.5,BF18-1-11,168.5,166,171,5,no,BF18-1-11-171
+Gulf of Panama,Contadora,BF18-1-11-173.5,BF18-1-11,173.5,171,176,5,no,BF18-1-11-176
+Gulf of Panama,Contadora,BF18-1-11-178.5,BF18-1-11,178.5,176,181,5,no,BF18-1-11-181
+Gulf of Panama,Contadora,BF18-1-11-183.5,BF18-1-11,183.5,181,186,5,no,BF18-1-11-186
+Gulf of Panama,Contadora,BF18-1-11-188.5,BF18-1-11,188.5,186,191,5,no,BF18-1-11-191
+Gulf of Panama,Contadora,BF18-1-11-193.5,BF18-1-11,193.5,191,196,5,no,BF18-1-11-196
+Gulf of Panama,Contadora,BF18-1-11-198.5,BF18-1-11,198.5,196,201,5,no,BF18-1-11-201
+Gulf of Panama,Contadora,BF18-1-11-203.5,BF18-1-11,203.5,201,206,5,no,BF18-1-11-206
+Gulf of Panama,Contadora,BF18-1-11-208.5,BF18-1-11,208.5,206,211,5,no,BF18-1-11-211
+Gulf of Panama,Contadora,BF18-1-11-213.5,BF18-1-11,213.5,211,216,5,no,BF18-1-11-216
+Gulf of Panama,Contadora,BF18-1-11-218.5,BF18-1-11,218.5,216,221,5,no,BF18-1-11-221
+Gulf of Panama,Contadora,BF18-1-11-223.5,BF18-1-11,223.5,221,226,5,no,BF18-1-11-226
+Gulf of Panama,Contadora,BF18-1-11-228.5,BF18-1-11,228.5,226,231,5,no,BF18-1-11-231
+Gulf of Panama,Contadora,BF18-1-11-233.5,BF18-1-11,233.5,231,236,5,no,BF18-1-11-236
+Gulf of Panama,Contadora,BF18-1-11-238.5,BF18-1-11,238.5,236,241,5,no,BF18-1-11-241
+Gulf of Panama,Contadora,BF18-1-11-243.5,BF18-1-11,243.5,241,246,5,no,BF18-1-11-246
+Gulf of Panama,Contadora,BF18-1-11-248.5,BF18-1-11,248.5,246,251,5,no,BF18-1-11-251
+Gulf of Panama,Contadora,BF18-1-11-253.5,BF18-1-11,253.5,251,256,5,no,BF18-1-11-256
+Gulf of Panama,Contadora,BF18-1-11-258.5,BF18-1-11,258.5,256,261,5,no,BF18-1-11-261
+Gulf of Panama,Contadora,BF18-1-11-263.5,BF18-1-11,263.5,261,266,5,no,BF18-1-11-266
+Gulf of Panama,Contadora,BF18-1-11-268.5,BF18-1-11,268.5,266,271,5,no,BF18-1-11-271
+Gulf of Panama,Contadora,BF18-1-11-273.5,BF18-1-11,273.5,271,276,5,no,BF18-1-11-276
+Gulf of Panama,Contadora,BF18-1-11-278.5,BF18-1-11,278.5,276,281,5,no,BF18-1-11-281
+Gulf of Panama,Contadora,BF18-1-11-283.5,BF18-1-11,283.5,281,286,5,no,BF18-1-11-286
+Gulf of Panama,Contadora,BF18-1-11-288.5,BF18-1-11,288.5,286,291,5,no,BF18-1-11-291
+Gulf of Panama,Contadora,BF18-1-11-293.5,BF18-1-11,293.5,291,296,5,no,BF18-1-11-296
+Gulf of Panama,Contadora,BF18-1-11-298.5,BF18-1-11,298.5,296,301,5,no,BF18-1-11-301
+Gulf of Panama,Contadora,BF18-1-11-303.5,BF18-1-11,303.5,301,306,5,no,BF18-1-11-306
+Gulf of Panama,Contadora,BF18-1-11-308.5,BF18-1-11,308.5,306,311,5,no,BF18-1-11-311
+Gulf of Panama,Contadora,BF18-1-11-313.5,BF18-1-11,313.5,311,316,5,no,BF18-1-11-316
+Gulf of Panama,Contadora,BF18-1-11-318.5,BF18-1-11,318.5,316,321,5,no,BF18-1-11-321
+Gulf of Panama,Contadora,BF18-1-11-323.5,BF18-1-11,323.5,321,326,5,no,BF18-1-11-326
+Gulf of Panama,Contadora,BF18-1-11-328.5,BF18-1-11,328.5,326,331,5,no,BF18-1-11-331
+Gulf of Panama,Contadora,BF18-1-11-333.5,BF18-1-11,333.5,331,336,5,no,BF18-1-11-336
+Gulf of Panama,Contadora,BF18-1-11-338.5,BF18-1-11,338.5,336,341,5,no,BF18-1-11-341
+Gulf of Panama,Contadora,BF18-1-11-343.5,BF18-1-11,343.5,341,346,5,no,BF18-1-11-346
+Gulf of Panama,Contadora,BF18-1-11-348.5,BF18-1-11,348.5,346,351,5,no,BF18-1-11-351
+Gulf of Panama,Contadora,BF18-1-11-353.5,BF18-1-11,353.5,351,356,5,no,BF18-1-11-356
+Gulf of Panama,Contadora,BF18-1-11-358.5,BF18-1-11,358.5,356,361,5,no,BF18-1-11-361
+Gulf of Panama,Contadora,BF18-1-11-363.5,BF18-1-11,363.5,361,366,5,no,BF18-1-11-366
+Gulf of Panama,Contadora,BF18-1-12-2.5,BF18-1-12,2.5,0,5,5,no,BF18-1-12-5
+Gulf of Panama,Contadora,BF18-1-12-8,BF18-1-12,8,5,11,6,yes,BF18-1-12-11
+Gulf of Panama,Contadora,BF18-1-12-13,BF18-1-12,13,11,15,4,yes,BF18-1-12-15
+Gulf of Panama,Contadora,BF18-1-12-17.5,BF18-1-12,17.5,15,20,5,no,BF18-1-12-20
+Gulf of Panama,Contadora,BF18-1-12-22.5,BF18-1-12,22.5,20,25,5,no,BF18-1-12-25
+Gulf of Panama,Contadora,BF18-1-12-27.5,BF18-1-12,27.5,25,30,5,no,BF18-1-12-30
+Gulf of Panama,Contadora,BF18-1-12-32.5,BF18-1-12,32.5,30,35,5,no,BF18-1-12-35
+Gulf of Panama,Contadora,BF18-1-12-37.5,BF18-1-12,37.5,35,40,5,no,BF18-1-12-40
+Gulf of Panama,Contadora,BF18-1-12-42.5,BF18-1-12,42.5,40,45,5,no,BF18-1-12-45
+Gulf of Panama,Contadora,BF18-1-12-47.5,BF18-1-12,47.5,45,50,5,no,BF18-1-12-50
+Gulf of Panama,Contadora,BF18-1-12-52.5,BF18-1-12,52.5,50,55,5,no,BF18-1-12-55
+Gulf of Panama,Contadora,BF18-1-12-57.5,BF18-1-12,57.5,55,60,5,no,BF18-1-12-60
+Gulf of Panama,Contadora,BF18-1-12-62.5,BF18-1-12,62.5,60,65,5,no,BF18-1-12-65
+Gulf of Panama,Contadora,BF18-1-12-67.5,BF18-1-12,67.5,65,70,5,no,BF18-1-12-70
+Gulf of Panama,Contadora,BF18-1-12-72.5,BF18-1-12,72.5,70,75,5,no,BF18-1-12-75
+Gulf of Panama,Contadora,BF18-1-12-77.5,BF18-1-12,77.5,75,80,5,no,BF18-1-12-80
+Gulf of Panama,Contadora,BF18-1-12-82.5,BF18-1-12,82.5,80,85,5,no,BF18-1-12-85
+Gulf of Panama,Contadora,BF18-1-12-87.5,BF18-1-12,87.5,85,90,5,no,BF18-1-12-90
+Gulf of Panama,Contadora,BF18-1-12-92.5,BF18-1-12,92.5,90,95,5,no,BF18-1-12-95
+Gulf of Panama,Contadora,BF18-1-12-97.5,BF18-1-12,97.5,95,100,5,no,BF18-1-12-100
+Gulf of Panama,Contadora,BF18-1-12-102.5,BF18-1-12,102.5,100,105,5,no,BF18-1-12-105
+Gulf of Panama,Contadora,BF18-1-12-107.5,BF18-1-12,107.5,105,110,5,no,BF18-1-12-110
+Gulf of Panama,Contadora,BF18-1-12-112.5,BF18-1-12,112.5,110,115,5,no,BF18-1-12-115
+Gulf of Panama,Contadora,BF18-1-12-117.5,BF18-1-12,117.5,115,120,5,no,BF18-1-12-120
+Gulf of Panama,Contadora,BF18-1-12-122.5,BF18-1-12,122.5,120,125,5,no,BF18-1-12-125
+Gulf of Panama,Contadora,BF18-1-12-127.5,BF18-1-12,127.5,125,130,5,no,BF18-1-12-130
+Gulf of Panama,Contadora,BF18-1-12-132.5,BF18-1-12,132.5,130,135,5,no,BF18-1-12-135
+Gulf of Panama,Contadora,BF18-1-12-137,BF18-1-12,137,135,139,4,yes,BF18-1-12-139
+Gulf of Panama,Contadora,BF18-1-12-141.5,BF18-1-12,141.5,139,144,5,no,BF18-1-12-144
+Gulf of Panama,Contadora,BF18-1-12-146.5,BF18-1-12,146.5,144,149,5,no,BF18-1-12-149
+Gulf of Panama,Contadora,BF18-1-12-151.5,BF18-1-12,151.5,149,154,5,no,BF18-1-12-154
+Gulf of Panama,Contadora,BF18-1-12-156.5,BF18-1-12,156.5,154,159,5,no,BF18-1-12-159
+Gulf of Panama,Contadora,BF18-1-12-161.5,BF18-1-12,161.5,159,164,5,no,BF18-1-12-164
+Gulf of Panama,Contadora,BF18-1-12-166.5,BF18-1-12,166.5,164,169,5,no,BF18-1-12-169
+Gulf of Panama,Contadora,BF18-1-12-171.5,BF18-1-12,171.5,169,174,5,no,BF18-1-12-174
+Gulf of Panama,Contadora,BF18-1-12-176.5,BF18-1-12,176.5,174,179,5,no,BF18-1-12-179
+Gulf of Panama,Contadora,BF18-1-12-181.5,BF18-1-12,181.5,179,184,5,no,BF18-1-12-184
+Gulf of Panama,Contadora,BF18-1-12-186.5,BF18-1-12,186.5,184,189,5,no,BF18-1-12-189
+Gulf of Panama,Contadora,BF18-1-12-191.5,BF18-1-12,191.5,189,194,5,no,BF18-1-12-194
+Gulf of Panama,Contadora,BF18-1-12-196.5,BF18-1-12,196.5,194,199,5,no,BF18-1-12-199
+Gulf of Panama,Contadora,BF18-1-12-201.5,BF18-1-12,201.5,199,204,5,no,BF18-1-12-204
+Gulf of Panama,Contadora,BF18-1-12-206.5,BF18-1-12,206.5,204,209,5,no,BF18-1-12-209
+Gulf of Panama,Contadora,BF18-1-12-211.5,BF18-1-12,211.5,209,214,5,no,BF18-1-12-214
+Gulf of Panama,Contadora,BF18-1-12-216.5,BF18-1-12,216.5,214,219,5,no,BF18-1-12-219
+Gulf of Panama,Contadora,BF18-1-12-221.5,BF18-1-12,221.5,219,224,5,no,BF18-1-12-224
+Gulf of Panama,Contadora,BF18-1-12-226.5,BF18-1-12,226.5,224,229,5,no,BF18-1-12-229
+Gulf of Panama,Contadora,BF18-1-12-231.5,BF18-1-12,231.5,229,234,5,no,BF18-1-12-234
+Gulf of Panama,Contadora,BF18-1-12-236.5,BF18-1-12,236.5,234,239,5,no,BF18-1-12-239
+Gulf of Panama,Contadora,BF18-1-13-2.5,BF18-1-13,2.5,0,5,5,no,BF18-1-13-5
+Gulf of Panama,Contadora,BF18-1-13-7.5,BF18-1-13,7.5,5,10,5,no,BF18-1-13-10
+Gulf of Panama,Contadora,BF18-1-13-12.5,BF18-1-13,12.5,10,15,5,no,BF18-1-13-15
+Gulf of Panama,Contadora,BF18-1-13-17.5,BF18-1-13,17.5,15,20,5,no,BF18-1-13-20
+Gulf of Panama,Contadora,BF18-1-13-22.5,BF18-1-13,22.5,20,25,5,no,BF18-1-13-25
+Gulf of Panama,Contadora,BF18-1-13-27.5,BF18-1-13,27.5,25,30,5,no,BF18-1-13-30
+Gulf of Panama,Contadora,BF18-1-13-32.5,BF18-1-13,32.5,30,35,5,no,BF18-1-13-35
+Gulf of Panama,Contadora,BF18-1-13-37.5,BF18-1-13,37.5,35,40,5,no,BF18-1-13-40
+Gulf of Panama,Contadora,BF18-1-13-42.5,BF18-1-13,42.5,40,45,5,no,BF18-1-13-45
+Gulf of Panama,Contadora,BF18-1-13-47.5,BF18-1-13,47.5,45,50,5,no,BF18-1-13-50
+Gulf of Panama,Contadora,BF18-1-13-52.5,BF18-1-13,52.5,50,55,5,no,BF18-1-13-55
+Gulf of Panama,Contadora,BF18-1-13-57.5,BF18-1-13,57.5,55,60,5,no,BF18-1-13-60
+Gulf of Panama,Contadora,BF18-1-13-62.5,BF18-1-13,62.5,60,65,5,no,BF18-1-13-65
+Gulf of Panama,Contadora,BF18-1-13-67.5,BF18-1-13,67.5,65,70,5,no,BF18-1-13-70
+Gulf of Panama,Contadora,BF18-1-13-72.5,BF18-1-13,72.5,70,75,5,no,BF18-1-13-75
+Gulf of Panama,Contadora,BF18-1-13-77.5,BF18-1-13,77.5,75,80,5,no,BF18-1-13-80
+Gulf of Panama,Contadora,BF18-1-13-82.5,BF18-1-13,82.5,80,85,5,no,BF18-1-13-85
+Gulf of Panama,Contadora,BF18-1-13-87.5,BF18-1-13,87.5,85,90,5,no,BF18-1-13-90
+Gulf of Panama,Contadora,BF18-1-13-92.5,BF18-1-13,92.5,90,95,5,no,BF18-1-13-95
+Gulf of Panama,Contadora,BF18-1-13-97.5,BF18-1-13,97.5,95,100,5,no,BF18-1-13-100
+Gulf of Panama,Contadora,BF18-1-13-102.5,BF18-1-13,102.5,100,105,5,no,BF18-1-13-105
+Gulf of Panama,Contadora,BF18-1-13-107.5,BF18-1-13,107.5,105,110,5,no,BF18-1-13-110
+Gulf of Panama,Contadora,BF18-1-13-112.5,BF18-1-13,112.5,110,115,5,no,BF18-1-13-115
+Gulf of Panama,Contadora,BF18-1-13-117.5,BF18-1-13,117.5,115,120,5,no,BF18-1-13-120
+Gulf of Panama,Contadora,BF18-1-13-122.5,BF18-1-13,122.5,120,125,5,no,BF18-1-13-125
+Gulf of Panama,Contadora,BF18-1-13-127.5,BF18-1-13,127.5,125,130,5,no,BF18-1-13-130
+Gulf of Panama,Contadora,BF18-1-13-132.5,BF18-1-13,132.5,130,135,5,no,BF18-1-13-135
+Gulf of Panama,Contadora,BF18-1-13-137.5,BF18-1-13,137.5,135,140,5,no,BF18-1-13-140
+Gulf of Panama,Contadora,BF18-1-13-142.5,BF18-1-13,142.5,140,145,5,no,BF18-1-13-145
+Gulf of Panama,Contadora,BF18-1-13-147.5,BF18-1-13,147.5,145,150,5,no,BF18-1-13-150
+Gulf of Panama,Contadora,BF18-1-13-152.5,BF18-1-13,152.5,150,155,5,no,BF18-1-13-155
+Gulf of Panama,Contadora,BF18-1-13-157.5,BF18-1-13,157.5,155,160,5,no,BF18-1-13-160
+Gulf of Panama,Contadora,BF18-1-13-162.5,BF18-1-13,162.5,160,165,5,no,BF18-1-13-165
+Gulf of Panama,Contadora,BF18-1-13-167.5,BF18-1-13,167.5,165,170,5,no,BF18-1-13-170
+Gulf of Panama,Contadora,BF18-1-13-172.5,BF18-1-13,172.5,170,175,5,no,BF18-1-13-175
+Gulf of Panama,Contadora,BF18-1-13-177.5,BF18-1-13,177.5,175,180,5,no,BF18-1-13-180
+Gulf of Panama,Contadora,BF18-1-13-182.5,BF18-1-13,182.5,180,185,5,no,BF18-1-13-185
+Gulf of Panama,Contadora,BF18-1-13-187.5,BF18-1-13,187.5,185,190,5,no,BF18-1-13-190
+Gulf of Panama,Contadora,BF18-1-13-192.5,BF18-1-13,192.5,190,195,5,no,BF18-1-13-195
+Gulf of Panama,Contadora,BF18-1-13-197.5,BF18-1-13,197.5,195,200,5,no,BF18-1-13-200
+Gulf of Panama,Contadora,BF18-1-13-202.5,BF18-1-13,202.5,200,205,5,no,BF18-1-13-205
+Gulf of Panama,Contadora,BF18-1-13-207.5,BF18-1-13,207.5,205,210,5,no,BF18-1-13-210
+Gulf of Panama,Contadora,BF18-1-13-212.5,BF18-1-13,212.5,210,215,5,no,BF18-1-13-215
+Gulf of Panama,Contadora,BF18-1-13-217.5,BF18-1-13,217.5,215,220,5,no,BF18-1-13-220
+Gulf of Panama,Contadora,BF18-1-13-222.5,BF18-1-13,222.5,220,225,5,no,BF18-1-13-225
+Gulf of Panama,Contadora,BF18-1-13-227.5,BF18-1-13,227.5,225,230,5,no,BF18-1-13-230
+Gulf of Panama,Contadora,BF18-1-13-232.5,BF18-1-13,232.5,230,235,5,no,BF18-1-13-235
+Gulf of Panama,Contadora,BF18-1-13-237.5,BF18-1-13,237.5,235,240,5,no,BF18-1-13-240
+Gulf of Panama,Contadora,BF18-1-13-242.5,BF18-1-13,242.5,240,245,5,no,BF18-1-13-245
+Gulf of Panama,Contadora,BF18-1-13-247.5,BF18-1-13,247.5,245,250,5,no,BF18-1-13-250
+Gulf of Panama,Contadora,BF18-1-13-252.5,BF18-1-13,252.5,250,255,5,no,BF18-1-13-255
+Gulf of Panama,Contadora,BF18-1-13-257.5,BF18-1-13,257.5,255,260,5,no,BF18-1-13-260
+Gulf of Panama,Contadora,BF18-1-13-262.5,BF18-1-13,262.5,260,265,5,no,BF18-1-13-265
+Gulf of Panama,Contadora,BF18-1-13-267.5,BF18-1-13,267.5,265,270,5,no,BF18-1-13-270
+Gulf of Panama,Contadora,BF18-1-13-272.5,BF18-1-13,272.5,270,275,5,no,BF18-1-13-275
+Gulf of Panama,Contadora,BF18-1-13-277.5,BF18-1-13,277.5,275,280,5,no,BF18-1-13-280
+Gulf of Panama,Contadora,BF18-1-13-283,BF18-1-13,283,280,286,6,yes,BF18-1-13-286
+Gulf of Panama,Saboga,AT19-1-1-2.5,AT19-1-1,2.5,0,5,5,no,AT19-1-1-5
+Gulf of Panama,Saboga,AT19-1-1-7.5,AT19-1-1,7.5,5,10,5,no,AT19-1-1-10
+Gulf of Panama,Saboga,AT19-1-1-12.5,AT19-1-1,12.5,10,15,5,no,AT19-1-1-15
+Gulf of Panama,Saboga,AT19-1-1-17.5,AT19-1-1,17.5,15,20,5,no,AT19-1-1-20
+Gulf of Panama,Saboga,AT19-1-1-22.5,AT19-1-1,22.5,20,25,5,no,AT19-1-1-25
+Gulf of Panama,Saboga,AT19-1-1-27.5,AT19-1-1,27.5,25,30,5,no,AT19-1-1-30
+Gulf of Panama,Saboga,AT19-1-1-32.5,AT19-1-1,32.5,30,35,5,no,AT19-1-1-35
+Gulf of Panama,Saboga,AT19-1-1-37.5,AT19-1-1,37.5,35,40,5,no,AT19-1-1-40
+Gulf of Panama,Saboga,AT19-1-1-42.5,AT19-1-1,42.5,40,45,5,no,AT19-1-1-45
+Gulf of Panama,Saboga,AT19-1-1-47.5,AT19-1-1,47.5,45,50,5,no,AT19-1-1-50
+Gulf of Panama,Saboga,AT19-1-1-52.5,AT19-1-1,52.5,50,55,5,no,AT19-1-1-55
+Gulf of Panama,Saboga,AT19-1-1-57.5,AT19-1-1,57.5,55,60,5,no,AT19-1-1-60
+Gulf of Panama,Saboga,AT19-1-1-62.5,AT19-1-1,62.5,60,65,5,no,AT19-1-1-65
+Gulf of Panama,Saboga,AT19-1-1-67.5,AT19-1-1,67.5,65,70,5,no,AT19-1-1-70
+Gulf of Panama,Saboga,AT19-1-1-72.5,AT19-1-1,72.5,70,75,5,no,AT19-1-1-75
+Gulf of Panama,Saboga,AT19-1-1-77.5,AT19-1-1,77.5,75,80,5,no,AT19-1-1-80
+Gulf of Panama,Saboga,AT19-1-1-82.5,AT19-1-1,82.5,80,85,5,no,AT19-1-1-85
+Gulf of Panama,Saboga,AT19-1-1-87.5,AT19-1-1,87.5,85,90,5,no,AT19-1-1-90
+Gulf of Panama,Saboga,AT19-1-1-92.5,AT19-1-1,92.5,90,95,5,no,AT19-1-1-95
+Gulf of Panama,Saboga,AT19-1-1-97.5,AT19-1-1,97.5,95,100,5,no,AT19-1-1-100
+Gulf of Panama,Saboga,AT19-1-1-102.5,AT19-1-1,102.5,100,105,5,no,AT19-1-1-105
+Gulf of Panama,Saboga,AT19-1-1-107.5,AT19-1-1,107.5,105,110,5,no,AT19-1-1-110
+Gulf of Panama,Saboga,AT19-1-1-112.5,AT19-1-1,112.5,110,115,5,no,AT19-1-1-115
+Gulf of Panama,Saboga,AT19-1-1-117.5,AT19-1-1,117.5,115,120,5,no,AT19-1-1-120
+Gulf of Panama,Saboga,AT19-1-1-122.5,AT19-1-1,122.5,120,125,5,no,AT19-1-1-125
+Gulf of Panama,Saboga,AT19-1-1-127.5,AT19-1-1,127.5,125,130,5,no,AT19-1-1-130
+Gulf of Panama,Saboga,AT19-1-1-132.5,AT19-1-1,132.5,130,135,5,no,AT19-1-1-135
+Gulf of Panama,Saboga,AT19-1-1-137.5,AT19-1-1,137.5,135,140,5,no,AT19-1-1-140
+Gulf of Panama,Saboga,AT19-1-1-142.5,AT19-1-1,142.5,140,145,5,no,AT19-1-1-145
+Gulf of Panama,Saboga,AT19-1-1-147.5,AT19-1-1,147.5,145,150,5,no,AT19-1-1-150
+Gulf of Panama,Saboga,AT19-1-1-152.5,AT19-1-1,152.5,150,155,5,no,AT19-1-1-155
+Gulf of Panama,Saboga,AT19-1-1-157.5,AT19-1-1,157.5,155,160,5,no,AT19-1-1-160
+Gulf of Panama,Saboga,AT19-1-1-162.5,AT19-1-1,162.5,160,165,5,no,AT19-1-1-165
+Gulf of Panama,Saboga,AT19-1-1-167.5,AT19-1-1,167.5,165,170,5,no,AT19-1-1-170
+Gulf of Panama,Saboga,AT19-1-1-172.5,AT19-1-1,172.5,170,175,5,no,AT19-1-1-175
+Gulf of Panama,Saboga,AT19-1-1-177.5,AT19-1-1,177.5,175,180,5,no,AT19-1-1-180
+Gulf of Panama,Saboga,AT19-1-1-182.5,AT19-1-1,182.5,180,185,5,no,AT19-1-1-185
+Gulf of Panama,Saboga,AT19-1-1-187.5,AT19-1-1,187.5,185,190,5,no,AT19-1-1-190
+Gulf of Panama,Saboga,AT19-1-1-192.5,AT19-1-1,192.5,190,195,5,no,AT19-1-1-195
+Gulf of Panama,Saboga,AT19-1-1-197.5,AT19-1-1,197.5,195,200,5,no,AT19-1-1-200
+Gulf of Panama,Saboga,AT19-1-1-202.5,AT19-1-1,202.5,200,205,5,no,AT19-1-1-205
+Gulf of Panama,Saboga,AT19-1-1-207.5,AT19-1-1,207.5,205,210,5,no,AT19-1-1-210
+Gulf of Panama,Saboga,AT19-1-1-212.5,AT19-1-1,212.5,210,215,5,no,AT19-1-1-215
+Gulf of Panama,Saboga,AT19-1-1-217.5,AT19-1-1,217.5,215,220,5,no,AT19-1-1-220
+Gulf of Panama,Saboga,AT19-1-1-222.5,AT19-1-1,222.5,220,225,5,no,AT19-1-1-225
+Gulf of Panama,Saboga,AT19-1-1-227.5,AT19-1-1,227.5,225,230,5,no,AT19-1-1-230
+Gulf of Panama,Saboga,AT19-1-1-232.5,AT19-1-1,232.5,230,235,5,no,AT19-1-1-235
+Gulf of Panama,Saboga,AT19-1-1-237.5,AT19-1-1,237.5,235,240,5,no,AT19-1-1-240
+Gulf of Panama,Saboga,AT19-1-1-242.5,AT19-1-1,242.5,240,245,5,no,AT19-1-1-245
+Gulf of Panama,Saboga,AT19-1-1-247.5,AT19-1-1,247.5,245,250,5,no,AT19-1-1-250
+Gulf of Panama,Saboga,AT19-1-1-252.5,AT19-1-1,252.5,250,255,5,no,AT19-1-1-255
+Gulf of Panama,Saboga,AT19-1-1-257.5,AT19-1-1,257.5,255,260,5,no,AT19-1-1-260
+Gulf of Panama,Saboga,AT19-1-1-262.5,AT19-1-1,262.5,260,265,5,no,AT19-1-1-265
+Gulf of Panama,Saboga,AT19-1-1-267.5,AT19-1-1,267.5,265,270,5,no,AT19-1-1-270
+Gulf of Panama,Saboga,AT19-1-1-272.5,AT19-1-1,272.5,270,275,5,no,AT19-1-1-275
+Gulf of Panama,Saboga,AT19-1-1-277.5,AT19-1-1,277.5,275,280,5,no,AT19-1-1-280
+Gulf of Panama,Saboga,AT19-1-1-282.5,AT19-1-1,282.5,280,285,5,no,AT19-1-1-285
+Gulf of Panama,Saboga,AT19-1-1-287.5,AT19-1-1,287.5,285,290,5,no,AT19-1-1-290
+Gulf of Panama,Saboga,AT19-1-1-292.5,AT19-1-1,292.5,290,295,5,no,AT19-1-1-295
+Gulf of Panama,Saboga,AT19-1-1-297.5,AT19-1-1,297.5,295,300,5,no,AT19-1-1-300
+Gulf of Panama,Saboga,AT19-1-1-302.5,AT19-1-1,302.5,300,305,5,no,AT19-1-1-305
+Gulf of Panama,Saboga,AT19-1-1-307.5,AT19-1-1,307.5,305,310,5,no,AT19-1-1-310
+Gulf of Panama,Saboga,AT19-1-1-312.5,AT19-1-1,312.5,310,315,5,no,AT19-1-1-315
+Gulf of Panama,Saboga,AT19-1-1-317.5,AT19-1-1,317.5,315,320,5,no,AT19-1-1-320
+Gulf of Panama,Saboga,AT19-1-1-322.5,AT19-1-1,322.5,320,325,5,no,AT19-1-1-325
+Gulf of Panama,Saboga,AT19-1-1-327.5,AT19-1-1,327.5,325,330,5,no,AT19-1-1-330
+Gulf of Panama,Saboga,AT19-1-1-332.5,AT19-1-1,332.5,330,335,5,no,AT19-1-1-335
+Gulf of Panama,Saboga,AT19-1-1-337.5,AT19-1-1,337.5,335,340,5,no,AT19-1-1-340
+Gulf of Panama,Saboga,AT19-1-1-342.5,AT19-1-1,342.5,340,345,5,no,AT19-1-1-345
+Gulf of Panama,Saboga,AT19-1-1-347.5,AT19-1-1,347.5,345,350,5,no,AT19-1-1-350
+Gulf of Panama,Saboga,AT19-1-1-352.5,AT19-1-1,352.5,350,355,5,no,AT19-1-1-355
+Gulf of Panama,Saboga,AT19-1-1-357.5,AT19-1-1,357.5,355,360,5,no,AT19-1-1-360
+Gulf of Panama,Saboga,AT19-1-1-362.5,AT19-1-1,362.5,360,365,5,no,AT19-1-1-365
+Gulf of Panama,Saboga,AT19-1-1-367.5,AT19-1-1,367.5,365,370,5,no,AT19-1-1-370
+Gulf of Panama,Saboga,AT19-1-1-372.5,AT19-1-1,372.5,370,375,5,no,AT19-1-1-375
+Gulf of Panama,Saboga,AT19-1-2-2.5,AT19-1-2,2.5,0,5,5,no,AT19-1-2-5
+Gulf of Panama,Saboga,AT19-1-2-7.5,AT19-1-2,7.5,5,10,5,no,AT19-1-2-10
+Gulf of Panama,Saboga,AT19-1-2-12.5,AT19-1-2,12.5,10,15,5,no,AT19-1-2-15
+Gulf of Panama,Saboga,AT19-1-2-17.5,AT19-1-2,17.5,15,20,5,no,AT19-1-2-20
+Gulf of Panama,Saboga,AT19-1-2-22.5,AT19-1-2,22.5,20,25,5,no,AT19-1-2-25
+Gulf of Panama,Saboga,AT19-1-2-27.5,AT19-1-2,27.5,25,30,5,no,AT19-1-2-30
+Gulf of Panama,Saboga,AT19-1-2-32.5,AT19-1-2,32.5,30,35,5,no,AT19-1-2-35
+Gulf of Panama,Saboga,AT19-1-2-37.5,AT19-1-2,37.5,35,40,5,no,AT19-1-2-40
+Gulf of Panama,Saboga,AT19-1-2-42.5,AT19-1-2,42.5,40,45,5,no,AT19-1-2-45
+Gulf of Panama,Saboga,AT19-1-2-47.5,AT19-1-2,47.5,45,50,5,no,AT19-1-2-50
+Gulf of Panama,Saboga,AT19-1-2-52.5,AT19-1-2,52.5,50,55,5,no,AT19-1-2-55
+Gulf of Panama,Saboga,AT19-1-2-57.5,AT19-1-2,57.5,55,60,5,no,AT19-1-2-60
+Gulf of Panama,Saboga,AT19-1-2-62.5,AT19-1-2,62.5,60,65,5,no,AT19-1-2-65
+Gulf of Panama,Saboga,AT19-1-2-67.5,AT19-1-2,67.5,65,70,5,no,AT19-1-2-70
+Gulf of Panama,Saboga,AT19-1-2-72.5,AT19-1-2,72.5,70,75,5,no,AT19-1-2-75
+Gulf of Panama,Saboga,AT19-1-2-77.5,AT19-1-2,77.5,75,80,5,no,AT19-1-2-80
+Gulf of Panama,Saboga,AT19-1-2-82.5,AT19-1-2,82.5,80,85,5,no,AT19-1-2-85
+Gulf of Panama,Saboga,AT19-1-2-87.5,AT19-1-2,87.5,85,90,5,no,AT19-1-2-90
+Gulf of Panama,Saboga,AT19-1-2-92.5,AT19-1-2,92.5,90,95,5,no,AT19-1-2-95
+Gulf of Panama,Saboga,AT19-1-2-97.5,AT19-1-2,97.5,95,100,5,no,AT19-1-2-100
+Gulf of Panama,Saboga,AT19-1-2-102.5,AT19-1-2,102.5,100,105,5,no,AT19-1-2-105
+Gulf of Panama,Saboga,AT19-1-2-107.5,AT19-1-2,107.5,105,110,5,no,AT19-1-2-110
+Gulf of Panama,Saboga,AT19-1-2-112.5,AT19-1-2,112.5,110,115,5,no,AT19-1-2-115
+Gulf of Panama,Saboga,AT19-1-2-117.5,AT19-1-2,117.5,115,120,5,no,AT19-1-2-120
+Gulf of Panama,Saboga,AT19-1-2-122.5,AT19-1-2,122.5,120,125,5,no,AT19-1-2-125
+Gulf of Panama,Saboga,AT19-1-2-127.5,AT19-1-2,127.5,125,130,5,no,AT19-1-2-130
+Gulf of Panama,Saboga,AT19-1-2-132.5,AT19-1-2,132.5,130,135,5,no,AT19-1-2-135
+Gulf of Panama,Saboga,AT19-1-2-137.5,AT19-1-2,137.5,135,140,5,no,AT19-1-2-140
+Gulf of Panama,Saboga,AT19-1-2-142.5,AT19-1-2,142.5,140,145,5,no,AT19-1-2-145
+Gulf of Panama,Saboga,AT19-1-2-147.5,AT19-1-2,147.5,145,150,5,no,AT19-1-2-150
+Gulf of Panama,Saboga,AT19-1-2-152.5,AT19-1-2,152.5,150,155,5,no,AT19-1-2-155
+Gulf of Panama,Saboga,AT19-1-2-157.5,AT19-1-2,157.5,155,160,5,no,AT19-1-2-160
+Gulf of Panama,Saboga,AT19-1-2-162.5,AT19-1-2,162.5,160,165,5,no,AT19-1-2-165
+Gulf of Panama,Saboga,AT19-1-2-167.5,AT19-1-2,167.5,165,170,5,no,AT19-1-2-170
+Gulf of Panama,Saboga,AT19-1-2-172.5,AT19-1-2,172.5,170,175,5,no,AT19-1-2-175
+Gulf of Panama,Saboga,AT19-1-2-177.5,AT19-1-2,177.5,175,180,5,no,AT19-1-2-180
+Gulf of Panama,Saboga,AT19-1-2-182.5,AT19-1-2,182.5,180,185,5,no,AT19-1-2-185
+Gulf of Panama,Saboga,AT19-1-2-187.5,AT19-1-2,187.5,185,190,5,no,AT19-1-2-190
+Gulf of Panama,Saboga,AT19-1-2-192.5,AT19-1-2,192.5,190,195,5,no,AT19-1-2-195
+Gulf of Panama,Saboga,AT19-1-2-197.5,AT19-1-2,197.5,195,200,5,no,AT19-1-2-200
+Gulf of Panama,Saboga,AT19-1-2-202.5,AT19-1-2,202.5,200,205,5,no,AT19-1-2-205
+Gulf of Panama,Saboga,AT19-1-2-207.5,AT19-1-2,207.5,205,210,5,no,AT19-1-2-210
+Gulf of Panama,Saboga,AT19-1-2-212.5,AT19-1-2,212.5,210,215,5,no,AT19-1-2-215
+Gulf of Panama,Saboga,AT19-1-2-217.5,AT19-1-2,217.5,215,220,5,no,AT19-1-2-220
+Gulf of Panama,Saboga,AT19-1-2-222.5,AT19-1-2,222.5,220,225,5,no,AT19-1-2-225
+Gulf of Panama,Saboga,AT19-1-2-227.5,AT19-1-2,227.5,225,230,5,no,AT19-1-2-230
+Gulf of Panama,Saboga,AT19-1-2-232.5,AT19-1-2,232.5,230,235,5,no,AT19-1-2-235
+Gulf of Panama,Saboga,AT19-1-2-237.5,AT19-1-2,237.5,235,240,5,no,AT19-1-2-240
+Gulf of Panama,Saboga,AT19-1-2-242.5,AT19-1-2,242.5,240,245,5,no,AT19-1-2-245
+Gulf of Panama,Saboga,AT19-1-2-247.5,AT19-1-2,247.5,245,250,5,no,AT19-1-2-250
+Gulf of Panama,Saboga,AT19-1-2-252.5,AT19-1-2,252.5,250,255,5,no,AT19-1-2-255
+Gulf of Panama,Saboga,AT19-1-2-257.5,AT19-1-2,257.5,255,260,5,no,AT19-1-2-260
+Gulf of Panama,Saboga,AT19-1-2-262.5,AT19-1-2,262.5,260,265,5,no,AT19-1-2-265
+Gulf of Panama,Saboga,AT19-1-2-267.5,AT19-1-2,267.5,265,270,5,no,AT19-1-2-270
+Gulf of Panama,Saboga,AT19-1-2-272.5,AT19-1-2,272.5,270,275,5,no,AT19-1-2-275
+Gulf of Panama,Saboga,AT19-1-2-277.5,AT19-1-2,277.5,275,280,5,no,AT19-1-2-280
+Gulf of Panama,Saboga,AT19-1-2-282.5,AT19-1-2,282.5,280,285,5,no,AT19-1-2-285
+Gulf of Panama,Saboga,AT19-1-2-287.5,AT19-1-2,287.5,285,290,5,no,AT19-1-2-290
+Gulf of Panama,Saboga,AT19-1-2-292.5,AT19-1-2,292.5,290,295,5,no,AT19-1-2-295
+Gulf of Panama,Saboga,AT19-1-2-297.5,AT19-1-2,297.5,295,300,5,no,AT19-1-2-300
+Gulf of Panama,Saboga,AT19-1-2-302.5,AT19-1-2,302.5,300,305,5,no,AT19-1-2-305
+Gulf of Panama,Saboga,AT19-1-2-307.5,AT19-1-2,307.5,305,310,5,no,AT19-1-2-310
+Gulf of Panama,Saboga,AT19-1-2-312.5,AT19-1-2,312.5,310,315,5,no,AT19-1-2-315
+Gulf of Panama,Saboga,AT19-1-2-317.5,AT19-1-2,317.5,315,320,5,no,AT19-1-2-320
+Gulf of Panama,Saboga,AT19-1-2-322.5,AT19-1-2,322.5,320,325,5,no,AT19-1-2-325
+Gulf of Panama,Saboga,AT19-1-2-327.5,AT19-1-2,327.5,325,330,5,no,AT19-1-2-330
+Gulf of Panama,Saboga,AT19-1-2-332.5,AT19-1-2,332.5,330,335,5,no,AT19-1-2-335
+Gulf of Panama,Saboga,AT19-1-2-337.5,AT19-1-2,337.5,335,340,5,no,AT19-1-2-340
+Gulf of Panama,Saboga,AT19-1-2-342.5,AT19-1-2,342.5,340,345,5,no,AT19-1-2-345
+Gulf of Panama,Saboga,AT19-1-3-2.5,AT19-1-3,2.5,0,5,5,no,AT19-1-3-5
+Gulf of Panama,Saboga,AT19-1-3-7.5,AT19-1-3,7.5,5,10,5,no,AT19-1-3-10
+Gulf of Panama,Saboga,AT19-1-3-12.5,AT19-1-3,12.5,10,15,5,no,AT19-1-3-15
+Gulf of Panama,Saboga,AT19-1-3-17.5,AT19-1-3,17.5,15,20,5,no,AT19-1-3-20
+Gulf of Panama,Saboga,AT19-1-3-22.5,AT19-1-3,22.5,20,25,5,no,AT19-1-3-25
+Gulf of Panama,Saboga,AT19-1-3-27.5,AT19-1-3,27.5,25,30,5,no,AT19-1-3-30
+Gulf of Panama,Saboga,AT19-1-3-32.5,AT19-1-3,32.5,30,35,5,no,AT19-1-3-35
+Gulf of Panama,Saboga,AT19-1-3-37.5,AT19-1-3,37.5,35,40,5,no,AT19-1-3-40
+Gulf of Panama,Saboga,AT19-1-3-42.5,AT19-1-3,42.5,40,45,5,no,AT19-1-3-45
+Gulf of Panama,Saboga,AT19-1-3-47.5,AT19-1-3,47.5,45,50,5,no,AT19-1-3-50
+Gulf of Panama,Saboga,AT19-1-3-52.5,AT19-1-3,52.5,50,55,5,no,AT19-1-3-55
+Gulf of Panama,Saboga,AT19-1-3-57.5,AT19-1-3,57.5,55,60,5,no,AT19-1-3-60
+Gulf of Panama,Saboga,AT19-1-3-62.5,AT19-1-3,62.5,60,65,5,no,AT19-1-3-65
+Gulf of Panama,Saboga,AT19-1-3-67.5,AT19-1-3,67.5,65,70,5,no,AT19-1-3-70
+Gulf of Panama,Saboga,AT19-1-3-72.5,AT19-1-3,72.5,70,75,5,no,AT19-1-3-75
+Gulf of Panama,Saboga,AT19-1-3-77.5,AT19-1-3,77.5,75,80,5,no,AT19-1-3-80
+Gulf of Panama,Saboga,AT19-1-3-82.5,AT19-1-3,82.5,80,85,5,no,AT19-1-3-85
+Gulf of Panama,Saboga,AT19-1-3-87.5,AT19-1-3,87.5,85,90,5,no,AT19-1-3-90
+Gulf of Panama,Saboga,AT19-1-3-92.5,AT19-1-3,92.5,90,95,5,no,AT19-1-3-95
+Gulf of Panama,Saboga,AT19-1-3-97.5,AT19-1-3,97.5,95,100,5,no,AT19-1-3-100
+Gulf of Panama,Saboga,AT19-1-3-102.5,AT19-1-3,102.5,100,105,5,no,AT19-1-3-105
+Gulf of Panama,Saboga,AT19-1-3-107.5,AT19-1-3,107.5,105,110,5,no,AT19-1-3-110
+Gulf of Panama,Saboga,AT19-1-3-112.5,AT19-1-3,112.5,110,115,5,no,AT19-1-3-115
+Gulf of Panama,Saboga,AT19-1-3-117.5,AT19-1-3,117.5,115,120,5,no,AT19-1-3-120
+Gulf of Panama,Saboga,AT19-1-3-122.5,AT19-1-3,122.5,120,125,5,no,AT19-1-3-125
+Gulf of Panama,Saboga,AT19-1-3-127.5,AT19-1-3,127.5,125,130,5,no,AT19-1-3-130
+Gulf of Panama,Saboga,AT19-1-3-132.5,AT19-1-3,132.5,130,135,5,no,AT19-1-3-135
+Gulf of Panama,Saboga,AT19-1-3-137.5,AT19-1-3,137.5,135,140,5,no,AT19-1-3-140
+Gulf of Panama,Saboga,AT19-1-3-142.5,AT19-1-3,142.5,140,145,5,no,AT19-1-3-145
+Gulf of Panama,Saboga,AT19-1-3-147.5,AT19-1-3,147.5,145,150,5,no,AT19-1-3-150
+Gulf of Panama,Saboga,AT19-1-3-152.5,AT19-1-3,152.5,150,155,5,no,AT19-1-3-155
+Gulf of Panama,Saboga,AT19-1-3-157.5,AT19-1-3,157.5,155,160,5,no,AT19-1-3-160
+Gulf of Panama,Saboga,AT19-1-3-162.5,AT19-1-3,162.5,160,165,5,no,AT19-1-3-165
+Gulf of Panama,Saboga,AT19-1-3-167.5,AT19-1-3,167.5,165,170,5,no,AT19-1-3-170
+Gulf of Panama,Saboga,AT19-1-3-172.5,AT19-1-3,172.5,170,175,5,no,AT19-1-3-175
+Gulf of Panama,Saboga,AT19-1-3-177.5,AT19-1-3,177.5,175,180,5,no,AT19-1-3-180
+Gulf of Panama,Saboga,AT19-1-3-182.5,AT19-1-3,182.5,180,185,5,no,AT19-1-3-185
+Gulf of Panama,Saboga,AT19-1-3-187.5,AT19-1-3,187.5,185,190,5,no,AT19-1-3-190
+Gulf of Panama,Saboga,AT19-1-3-192.5,AT19-1-3,192.5,190,195,5,no,AT19-1-3-195
+Gulf of Panama,Saboga,AT19-1-3-197.5,AT19-1-3,197.5,195,200,5,no,AT19-1-3-200
+Gulf of Panama,Saboga,AT19-1-3-202.5,AT19-1-3,202.5,200,205,5,no,AT19-1-3-205
+Gulf of Panama,Saboga,AT19-1-3-207.5,AT19-1-3,207.5,205,210,5,no,AT19-1-3-210
+Gulf of Panama,Saboga,AT19-1-3-212.5,AT19-1-3,212.5,210,215,5,no,AT19-1-3-215
+Gulf of Panama,Saboga,AT19-1-3-217.5,AT19-1-3,217.5,215,220,5,no,AT19-1-3-220
+Gulf of Panama,Saboga,AT19-1-3-222.5,AT19-1-3,222.5,220,225,5,no,AT19-1-3-225
+Gulf of Panama,Saboga,AT19-1-3-227.5,AT19-1-3,227.5,225,230,5,no,AT19-1-3-230
+Gulf of Panama,Saboga,AT19-1-3-232.5,AT19-1-3,232.5,230,235,5,no,AT19-1-3-235
+Gulf of Panama,Saboga,AT19-1-3-237.5,AT19-1-3,237.5,235,240,5,no,AT19-1-3-240
+Gulf of Panama,Saboga,AT19-1-3-242.5,AT19-1-3,242.5,240,245,5,no,AT19-1-3-245
+Gulf of Panama,Saboga,AT19-1-3-247.5,AT19-1-3,247.5,245,250,5,no,AT19-1-3-250
+Gulf of Panama,Saboga,AT19-1-3-252.5,AT19-1-3,252.5,250,255,5,no,AT19-1-3-255
+Gulf of Panama,Saboga,AT19-1-3-257.5,AT19-1-3,257.5,255,260,5,no,AT19-1-3-260
+Gulf of Panama,Saboga,AT19-1-3-262.5,AT19-1-3,262.5,260,265,5,no,AT19-1-3-265
+Gulf of Panama,Saboga,AT19-1-3-267.5,AT19-1-3,267.5,265,270,5,no,AT19-1-3-270
+Gulf of Panama,Saboga,AT19-1-3-272.5,AT19-1-3,272.5,270,275,5,no,AT19-1-3-275
+Gulf of Panama,Saboga,AT19-1-3-277.5,AT19-1-3,277.5,275,280,5,no,AT19-1-3-280
+Gulf of Panama,Saboga,AT19-1-3-282.5,AT19-1-3,282.5,280,285,5,no,AT19-1-3-285
+Gulf of Panama,Saboga,AT19-1-3-287.5,AT19-1-3,287.5,285,290,5,no,AT19-1-3-290
+Gulf of Panama,Saboga,AT19-1-3-292.5,AT19-1-3,292.5,290,295,5,no,AT19-1-3-295
+Gulf of Panama,Saboga,AT19-1-3-297.5,AT19-1-3,297.5,295,300,5,no,AT19-1-3-300
+Gulf of Panama,Saboga,AT19-1-3-302.5,AT19-1-3,302.5,300,305,5,no,AT19-1-3-305
+Gulf of Panama,Saboga,AT19-1-3-307.5,AT19-1-3,307.5,305,310,5,no,AT19-1-3-310
+Gulf of Panama,Saboga,AT19-1-3-312.5,AT19-1-3,312.5,310,315,5,no,AT19-1-3-315
+Gulf of Panama,Saboga,AT19-1-3-317.5,AT19-1-3,317.5,315,320,5,no,AT19-1-3-320
+Gulf of Panama,Saboga,AT19-1-3-322.5,AT19-1-3,322.5,320,325,5,no,AT19-1-3-325
+Gulf of Panama,Saboga,AT19-1-3-327.5,AT19-1-3,327.5,325,330,5,no,AT19-1-3-330
+Gulf of Panama,Saboga,AT19-1-3-332.5,AT19-1-3,332.5,330,335,5,no,AT19-1-3-335
+Gulf of Panama,Saboga,AT19-1-3-337.5,AT19-1-3,337.5,335,340,5,no,AT19-1-3-340
+Gulf of Panama,Saboga,AT19-1-3-342.5,AT19-1-3,342.5,340,345,5,no,AT19-1-3-345
+Gulf of Panama,Saboga,AT19-1-3-347.5,AT19-1-3,347.5,345,350,5,no,AT19-1-3-350
+Gulf of Panama,Saboga,AT19-1-3-352.5,AT19-1-3,352.5,350,355,5,no,AT19-1-3-355
+Gulf of Panama,Saboga,AT19-1-3-357.5,AT19-1-3,357.5,355,360,5,no,AT19-1-3-360
+Gulf of Panama,Saboga,AT19-1-3-362.5,AT19-1-3,362.5,360,365,5,no,AT19-1-3-365
+Gulf of Panama,Saboga,AT19-1-3-367.5,AT19-1-3,367.5,365,370,5,no,AT19-1-3-370
+Gulf of Panama,Saboga,AT19-1-3-372.5,AT19-1-3,372.5,370,375,5,no,AT19-1-3-375
+Gulf of Panama,Saboga,AT19-1-3-377.5,AT19-1-3,377.5,375,380,5,no,AT19-1-3-380
+Gulf of Panama,Saboga,AT19-1-3-382.5,AT19-1-3,382.5,380,385,5,no,AT19-1-3-385
+Gulf of Panama,Isla Iguana,JC22-2-1-2.5,JC22-2-1,2.5,0,5,5,no,JC22-2-1-5
+Gulf of Panama,Isla Iguana,JC22-2-1-7.5,JC22-2-1,7.5,5,10,5,no,JC22-2-1-10
+Gulf of Panama,Isla Iguana,JC22-2-1-12.5,JC22-2-1,12.5,10,15,5,no,JC22-2-1-15
+Gulf of Panama,Isla Iguana,JC22-2-1-17.5,JC22-2-1,17.5,15,20,5,no,JC22-2-1-20
+Gulf of Panama,Isla Iguana,JC22-2-1-22.5,JC22-2-1,22.5,20,25,5,no,JC22-2-1-25
+Gulf of Panama,Isla Iguana,JC22-2-1-27.5,JC22-2-1,27.5,25,30,5,no,JC22-2-1-30
+Gulf of Panama,Isla Iguana,JC22-2-1-32.5,JC22-2-1,32.5,30,35,5,no,JC22-2-1-35
+Gulf of Panama,Isla Iguana,JC22-2-1-37.5,JC22-2-1,37.5,35,40,5,no,JC22-2-1-40
+Gulf of Panama,Isla Iguana,JC22-2-1-42.5,JC22-2-1,42.5,40,45,5,no,JC22-2-1-45
+Gulf of Panama,Isla Iguana,JC22-2-1-47.5,JC22-2-1,47.5,45,50,5,no,JC22-2-1-50
+Gulf of Panama,Isla Iguana,JC22-2-1-52.5,JC22-2-1,52.5,50,55,5,no,JC22-2-1-55
+Gulf of Panama,Isla Iguana,JC22-2-1-57.5,JC22-2-1,57.5,55,60,5,no,JC22-2-1-60
+Gulf of Panama,Isla Iguana,JC22-2-1-62.5,JC22-2-1,62.5,60,65,5,no,JC22-2-1-65
+Gulf of Panama,Isla Iguana,JC22-2-1-67.5,JC22-2-1,67.5,65,70,5,no,JC22-2-1-70
+Gulf of Panama,Isla Iguana,JC22-2-1-72.5,JC22-2-1,72.5,70,75,5,no,JC22-2-1-75
+Gulf of Panama,Isla Iguana,JC22-2-1-77.5,JC22-2-1,77.5,75,80,5,no,JC22-2-1-80
+Gulf of Panama,Isla Iguana,JC22-2-1-82.5,JC22-2-1,82.5,80,85,5,no,JC22-2-1-85
+Gulf of Panama,Isla Iguana,JC22-2-1-87.5,JC22-2-1,87.5,85,90,5,no,JC22-2-1-90
+Gulf of Panama,Isla Iguana,JC22-2-1-92.5,JC22-2-1,92.5,90,95,5,no,JC22-2-1-95
+Gulf of Panama,Isla Iguana,JC22-2-1-97.5,JC22-2-1,97.5,95,100,5,no,JC22-2-1-100
+Gulf of Panama,Isla Iguana,JC22-2-1-102.5,JC22-2-1,102.5,100,105,5,no,JC22-2-1-105
+Gulf of Panama,Isla Iguana,JC22-2-1-107.5,JC22-2-1,107.5,105,110,5,no,JC22-2-1-110
+Gulf of Panama,Isla Iguana,JC22-2-1-112.5,JC22-2-1,112.5,110,115,5,no,JC22-2-1-115
+Gulf of Panama,Isla Iguana,JC22-2-1-117.5,JC22-2-1,117.5,115,120,5,no,JC22-2-1-120
+Gulf of Panama,Isla Iguana,JC22-2-1-122.5,JC22-2-1,122.5,120,125,5,no,JC22-2-1-125
+Gulf of Panama,Isla Iguana,JC22-2-1-127.5,JC22-2-1,127.5,125,130,5,no,JC22-2-1-130
+Gulf of Panama,Isla Iguana,JC22-2-1-132.5,JC22-2-1,132.5,130,135,5,no,JC22-2-1-135
+Gulf of Panama,Isla Iguana,JC22-2-1-137.5,JC22-2-1,137.5,135,140,5,no,JC22-2-1-140
+Gulf of Panama,Isla Iguana,JC22-2-1-142.5,JC22-2-1,142.5,140,145,5,no,JC22-2-1-145
+Gulf of Panama,Isla Iguana,JC22-2-1-147.5,JC22-2-1,147.5,145,150,5,no,JC22-2-1-150
+Gulf of Panama,Isla Iguana,JC22-2-1-152.5,JC22-2-1,152.5,150,155,5,no,JC22-2-1-155
+Gulf of Panama,Isla Iguana,JC22-2-1-157.5,JC22-2-1,157.5,155,160,5,no,JC22-2-1-160
+Gulf of Panama,Isla Iguana,JC22-2-1-162.5,JC22-2-1,162.5,160,165,5,no,JC22-2-1-165
+Gulf of Panama,Isla Iguana,JC22-2-1-167.5,JC22-2-1,167.5,165,170,5,no,JC22-2-1-170
+Gulf of Panama,Isla Iguana,JC22-2-1-172.5,JC22-2-1,172.5,170,175,5,no,JC22-2-1-175
+Gulf of Panama,Isla Iguana,JC22-2-1-177.5,JC22-2-1,177.5,175,180,5,no,JC22-2-1-180
+Gulf of Panama,Isla Iguana,JC22-2-1-182.5,JC22-2-1,182.5,180,185,5,no,JC22-2-1-185
+Gulf of Panama,Isla Iguana,JC22-2-1-187.5,JC22-2-1,187.5,185,190,5,no,JC22-2-1-190
+Gulf of Panama,Isla Iguana,JC22-2-1-192.5,JC22-2-1,192.5,190,195,5,no,JC22-2-1-195
+Gulf of Panama,Isla Iguana,JC22-2-1-197.5,JC22-2-1,197.5,195,200,5,no,JC22-2-1-200
+Gulf of Panama,Isla Iguana,JC22-2-1-202.5,JC22-2-1,202.5,200,205,5,no,JC22-2-1-205
+Gulf of Panama,Isla Iguana,JC22-2-1-208.5,JC22-2-1,208.5,205,212,7,yes,JC22-2-1-212
+Gulf of Panama,Isla Iguana,JC22-2-2-2.5,JC22-2-2,2.5,0,5,5,no,JC22-2-2-5
+Gulf of Panama,Isla Iguana,JC22-2-2-7.5,JC22-2-2,7.5,5,10,5,no,JC22-2-2-10
+Gulf of Panama,Isla Iguana,JC22-2-2-12.5,JC22-2-2,12.5,10,15,5,no,JC22-2-2-15
+Gulf of Panama,Isla Iguana,JC22-2-2-17.5,JC22-2-2,17.5,15,20,5,no,JC22-2-2-20
+Gulf of Panama,Isla Iguana,JC22-2-2-22.5,JC22-2-2,22.5,20,25,5,no,JC22-2-2-25
+Gulf of Panama,Isla Iguana,JC22-2-2-27.5,JC22-2-2,27.5,25,30,5,no,JC22-2-2-30
+Gulf of Panama,Isla Iguana,JC22-2-2-32.5,JC22-2-2,32.5,30,35,5,no,JC22-2-2-35
+Gulf of Panama,Isla Iguana,JC22-2-2-37.5,JC22-2-2,37.5,35,40,5,no,JC22-2-2-40
+Gulf of Panama,Isla Iguana,JC22-2-2-42.5,JC22-2-2,42.5,40,45,5,no,JC22-2-2-45
+Gulf of Panama,Isla Iguana,JC22-2-2-47.5,JC22-2-2,47.5,45,50,5,no,JC22-2-2-50
+Gulf of Panama,Isla Iguana,JC22-2-2-52.5,JC22-2-2,52.5,50,55,5,no,JC22-2-2-55
+Gulf of Panama,Isla Iguana,JC22-2-2-57.5,JC22-2-2,57.5,55,60,5,no,JC22-2-2-60
+Gulf of Panama,Isla Iguana,JC22-2-2-62.5,JC22-2-2,62.5,60,65,5,no,JC22-2-2-65
+Gulf of Panama,Isla Iguana,JC22-2-2-67.5,JC22-2-2,67.5,65,70,5,no,JC22-2-2-70
+Gulf of Panama,Isla Iguana,JC22-2-2-72.5,JC22-2-2,72.5,70,75,5,no,JC22-2-2-75
+Gulf of Panama,Isla Iguana,JC22-2-2-77.5,JC22-2-2,77.5,75,80,5,no,JC22-2-2-80
+Gulf of Panama,Isla Iguana,JC22-2-2-82.5,JC22-2-2,82.5,80,85,5,no,JC22-2-2-85
+Gulf of Panama,Isla Iguana,JC22-2-2-87.5,JC22-2-2,87.5,85,90,5,no,JC22-2-2-90
+Gulf of Panama,Isla Iguana,JC22-2-2-92.5,JC22-2-2,92.5,90,95,5,no,JC22-2-2-95
+Gulf of Panama,Isla Iguana,JC22-2-2-97.5,JC22-2-2,97.5,95,100,5,no,JC22-2-2-100
+Gulf of Panama,Isla Iguana,JC22-2-2-102.5,JC22-2-2,102.5,100,105,5,no,JC22-2-2-105
+Gulf of Panama,Isla Iguana,JC22-2-2-107.5,JC22-2-2,107.5,105,110,5,no,JC22-2-2-110
+Gulf of Panama,Isla Iguana,JC22-2-2-112.5,JC22-2-2,112.5,110,115,5,no,JC22-2-2-115
+Gulf of Panama,Isla Iguana,JC22-2-2-117.5,JC22-2-2,117.5,115,120,5,no,JC22-2-2-120
+Gulf of Panama,Isla Iguana,JC22-2-2-122.5,JC22-2-2,122.5,120,125,5,no,JC22-2-2-125
+Gulf of Panama,Isla Iguana,JC22-2-2-127.5,JC22-2-2,127.5,125,130,5,no,JC22-2-2-130
+Gulf of Panama,Isla Iguana,JC22-2-2-132.5,JC22-2-2,132.5,130,135,5,no,JC22-2-2-135
+Gulf of Panama,Isla Iguana,JC22-2-2-138.5,JC22-2-2,138.5,135,142,7,yes,JC22-2-2-142
+Gulf of Panama,Isla Iguana,JC22-2-3-2.5,JC22-2-3,2.5,0,5,5,no,JC22-2-3-5
+Gulf of Panama,Isla Iguana,JC22-2-3-7.5,JC22-2-3,7.5,5,10,5,no,JC22-2-3-10
+Gulf of Panama,Isla Iguana,JC22-2-3-12.5,JC22-2-3,12.5,10,15,5,no,JC22-2-3-15
+Gulf of Panama,Isla Iguana,JC22-2-3-17.5,JC22-2-3,17.5,15,20,5,no,JC22-2-3-20
+Gulf of Panama,Isla Iguana,JC22-2-3-22.5,JC22-2-3,22.5,20,25,5,no,JC22-2-3-25
+Gulf of Panama,Isla Iguana,JC22-2-3-27.5,JC22-2-3,27.5,25,30,5,no,JC22-2-3-30
+Gulf of Panama,Isla Iguana,JC22-2-3-32.5,JC22-2-3,32.5,30,35,5,no,JC22-2-3-35
+Gulf of Panama,Isla Iguana,JC22-2-3-37.5,JC22-2-3,37.5,35,40,5,no,JC22-2-3-40
+Gulf of Panama,Isla Iguana,JC22-2-3-42.5,JC22-2-3,42.5,40,45,5,no,JC22-2-3-45
+Gulf of Panama,Isla Iguana,JC22-2-3-47.5,JC22-2-3,47.5,45,50,5,no,JC22-2-3-50
+Gulf of Panama,Isla Iguana,JC22-2-3-52.5,JC22-2-3,52.5,50,55,5,no,JC22-2-3-55
+Gulf of Panama,Isla Iguana,JC22-2-3-57.5,JC22-2-3,57.5,55,60,5,no,JC22-2-3-60
+Gulf of Panama,Isla Iguana,JC22-2-3-62.5,JC22-2-3,62.5,60,65,5,no,JC22-2-3-65
+Gulf of Panama,Isla Iguana,JC22-2-3-67.5,JC22-2-3,67.5,65,70,5,no,JC22-2-3-70
+Gulf of Panama,Isla Iguana,JC22-2-3-72.5,JC22-2-3,72.5,70,75,5,no,JC22-2-3-75
+Gulf of Panama,Isla Iguana,JC22-2-3-77.5,JC22-2-3,77.5,75,80,5,no,JC22-2-3-80
+Gulf of Panama,Isla Iguana,JC22-2-3-82.5,JC22-2-3,82.5,80,85,5,no,JC22-2-3-85
+Gulf of Panama,Isla Iguana,JC22-2-3-87.5,JC22-2-3,87.5,85,90,5,no,JC22-2-3-90
+Gulf of Panama,Isla Iguana,JC22-2-3-92.5,JC22-2-3,92.5,90,95,5,no,JC22-2-3-95
+Gulf of Panama,Isla Iguana,JC22-2-3-97.5,JC22-2-3,97.5,95,100,5,no,JC22-2-3-100
+Gulf of Panama,Isla Iguana,JC22-2-3-102.5,JC22-2-3,102.5,100,105,5,no,JC22-2-3-105
+Gulf of Panama,Isla Iguana,JC22-2-3-107.5,JC22-2-3,107.5,105,110,5,no,JC22-2-3-110
+Gulf of Panama,Isla Iguana,JC22-2-3-112.5,JC22-2-3,112.5,110,115,5,no,JC22-2-3-115
+Gulf of Panama,Isla Iguana,JC22-2-3-117.5,JC22-2-3,117.5,115,120,5,no,JC22-2-3-120
+Gulf of Panama,Isla Iguana,JC22-2-3-122.5,JC22-2-3,122.5,120,125,5,no,JC22-2-3-125
+Gulf of Panama,Isla Iguana,JC22-2-3-127.5,JC22-2-3,127.5,125,130,5,no,JC22-2-3-130
+Gulf of Panama,Isla Iguana,JC22-2-3-132.5,JC22-2-3,132.5,130,135,5,no,JC22-2-3-135
+Gulf of Panama,Isla Iguana,JC22-2-3-137.5,JC22-2-3,137.5,135,140,5,no,JC22-2-3-140
+Gulf of Panama,Isla Iguana,JC22-2-3-143.5,JC22-2-3,143.5,140,147,7,yes,JC22-2-3-147
