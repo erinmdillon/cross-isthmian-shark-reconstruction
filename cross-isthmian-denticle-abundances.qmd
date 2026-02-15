@@ -1,0 +1,1289 @@
+---
+title: "Cross-isthmian denticle abundances"
+format: html
+editor: visual
+---
+
+## Overview
+
+Here, we model denticle accumulation rates to make comparisons between time periods and regions. This script cleans and filters the raw denticle count data, runs the analysis, and plots Figure 1 and the related supplementary figures.
+
+Author: Erin Dillon, emdillon23\@gmail.com
+
+## Libraries
+
+```{r}
+#| warning: false
+
+library(glmmTMB)
+library(DHARMa)
+library(effects)
+library(emmeans)
+library(psych)
+library(tidyverse)
+library(ggridges)
+library(patchwork)
+
+```
+
+## Data
+
+### Read in raw data
+
+```{r}
+
+#BChron age models for each core
+bchron_age_depth <- read.csv("data/bchron_ages.csv",header=T)
+
+#Sample intervals
+sample_interval <- read.csv("data/sampling_intervals_pacific.csv")
+
+#Denticle counts
+dd_pan <- read.csv("data/cross_isthmus_dd.csv",header=T,na.strings=".")
+
+```
+
+### Data cleaning
+
+Map sample midpoint predictions from BChron onto sampling interval labels
+
+```{r}
+
+bchron_age_depth <- bchron_age_depth %>% 
+  #join with sample labels
+  left_join(sample_interval,by=c("region","date_locality","unique","sample","depth")) %>% 
+  #rename a couple of variables for clarity
+  rename(midpoint=depth) %>% 
+  rename(depth=depth_lower) %>% 
+  rename(date_unique=unique) %>% 
+  rename(unique=sampling_unique) %>% 
+  rename(median_num_years_per_sample=perc_50)
+
+```
+
+Match up denticle counts with age-depth model estimates
+
+```{r}
+
+dd_pan_age <- dd_pan %>% 
+  #combining denticle counts with age estimates
+  left_join(bchron_age_depth,by=c("region","sample","depth","unique")) %>% 
+  mutate(basin = as.factor(basin),
+         region = as.factor(region),
+         site_name = as.factor(site_name),
+         sample = as.factor(sample)) %>%
+  #estimated amount of time in each sample
+  mutate(no_years=case_when(
+  #bulk sample age estimates
+    basin=="Caribbean" ~ num_yrs_est_bulks, 
+  #median from age-depth models
+    basin=="Pacific" ~ median_num_years_per_sample)) %>%
+  #25th percentile, for plotting
+  mutate(no_years_25=case_when(
+    basin=="Caribbean" ~ num_yrs_est_bulks_lower, 
+    basin=="Pacific" ~ perc_25)) %>% 
+  #75th percentile, for plotting
+  mutate(no_years_75=case_when(
+    basin=="Caribbean" ~ num_yrs_est_bulks_upper, 
+    basin=="Pacific" ~ perc_75)) %>% 
+  #calculate raw denticle accumulation metrics
+  mutate(dd_kg=total_dd_count/sed_weight_kg,
+         dd_kg_yr=dd_kg/no_years,
+         dd_kg_yr_25=dd_kg/no_years_25, 
+         dd_kg_yr_75=dd_kg/no_years_75) %>% 
+  #using median age for each sampling interval
+  rename(age_AD_BC=predicted_age_median, 
+         age_BP=predicted_age_BP_median) %>% 
+  #filtering out one site with difficult to interpret time-averaging
+  filter(site_name != "Airport Point")
+
+```
+
+Filtering to just core tops/bottoms to facilitate comparability across the isthmus
+
+```{r}
+
+dd_pan_age_clean_pre <- dd_pan_age %>%
+  #applying age cut-offs
+  mutate(age_group = case_when(
+      age_AD_BC > 1900 ~ "modern", #last ~100 years
+      #Holocene, site-specific lower cut-offs given differences in accretion histories, and aiming for similar temporal range across basins
+      site_name == "Contadora" & age_AD_BC < -2000 ~ "pre_exp",  
+      site_name == "Isla Iguana" & age_AD_BC < -2000 ~ "pre_exp",
+      site_name == "Saboga" & age_AD_BC < -1000 ~ "pre_exp", 
+      basin == "Caribbean" & type == "modern_bulk" ~ "modern", 
+      basin == "Caribbean" & type == "Holocene_bulk" ~ "pre_exp")) %>%
+  mutate(age_group = fct_relevel(age_group,c("pre_exp","modern")))%>%
+  #keeping just the relevant samples for each time period
+  filter(age_group %in% c("modern","pre_exp")) %>%
+  droplevels() %>% 
+  #adding a column for the sampling year
+  mutate(sampling_year = case_when(site_name == "Contadora" ~ 2018,
+                                   site_name == "Isla Iguana" ~ 2022,
+                                   site_name == "Saboga" ~ 2019,
+                                   region == "Bocas del Toro" ~ 2014))
+
+```
+
+Save data prior to doing any cleaning related with reef matrix accumulation.
+
+```{r}
+
+#write.csv(dd_pan_age_clean_pre,"clean/dd_pan_age_clean_pre.csv")
+
+```
+
+Aggregating core tops into composite "bulk" samples given the presence of looser framework and less compaction. Aim here is to make the top \~15cm usable vs. filtering it out.
+
+```{r}
+
+dd_pan_age_clean_BULK <- dd_pan_age_clean_pre %>% 
+  #filter to the top intervals 0-15cm
+  filter(basin=="Pacific" & depth<20) %>%
+  group_by(basin, region, site_name,sample) %>% 
+  #summarize sample info for these top intervals
+  summarize(dd_top = sum(total_dd_count,na.rm=T),
+            weight_top = sum(sed_weight_kg,na.rm=T),
+            years_top = sampling_year-min(age_AD_BC)) %>% #median date lower sample
+  unique() %>% 
+  mutate(dd_kg_yr_top = dd_top/weight_top/years_top)
+
+```
+
+Now replace the top sampling intervals with each of these analytically pooled "bulk" samples.
+
+```{r}
+
+dd_pan_age_clean <- dd_pan_age_clean_pre %>%
+  #remove just the rows pooled into the "bulk" samples
+  filter(depth>12 | is.na(depth)==T) %>% 
+  #impute pooled sample info at depth=15, from  `dd_pan_age_clean_BULK` while retaining other columns for depth=15
+  mutate(total_dd_count = case_when( #aggregated dd count
+    depth==15 & sample=="BF18-1-11" ~ dd_pan_age_clean_BULK$dd_top[dd_pan_age_clean_BULK$sample=="BF18-1-11"],
+    depth==15 & sample=="BF18-1-12" ~ dd_pan_age_clean_BULK$dd_top[dd_pan_age_clean_BULK$sample=="BF18-1-12"],
+    depth==15 & sample=="BF18-1-13" ~ dd_pan_age_clean_BULK$dd_top[dd_pan_age_clean_BULK$sample=="BF18-1-13"],
+    depth==15 & sample=="AT19-1-1" ~ dd_pan_age_clean_BULK$dd_top[dd_pan_age_clean_BULK$sample=="AT19-1-1"],
+    depth==15 & sample=="AT19-1-2" ~ dd_pan_age_clean_BULK$dd_top[dd_pan_age_clean_BULK$sample=="AT19-1-2"],
+    depth==15 & sample=="AT19-1-3" ~ dd_pan_age_clean_BULK$dd_top[dd_pan_age_clean_BULK$sample=="AT19-1-3"],
+    depth==15 & sample=="JC22-2-1" ~ dd_pan_age_clean_BULK$dd_top[dd_pan_age_clean_BULK$sample=="JC22-2-1"],
+    depth==15 & sample=="JC22-2-2" ~ dd_pan_age_clean_BULK$dd_top[dd_pan_age_clean_BULK$sample=="JC22-2-2"],
+    depth==15 & sample=="JC22-2-3" ~ dd_pan_age_clean_BULK$dd_top[dd_pan_age_clean_BULK$sample=="JC22-2-3"],
+    TRUE ~ total_dd_count)) %>% 
+  mutate(sed_weight_kg = case_when( #aggregated sediment weight
+    depth==15 & sample=="BF18-1-11" ~ dd_pan_age_clean_BULK$weight_top[dd_pan_age_clean_BULK$sample=="BF18-1-11"],
+    depth==15 & sample=="BF18-1-12" ~ dd_pan_age_clean_BULK$weight_top[dd_pan_age_clean_BULK$sample=="BF18-1-12"],
+    depth==15 & sample=="BF18-1-13" ~ dd_pan_age_clean_BULK$weight_top[dd_pan_age_clean_BULK$sample=="BF18-1-13"],
+    depth==15 & sample=="AT19-1-1" ~ dd_pan_age_clean_BULK$weight_top[dd_pan_age_clean_BULK$sample=="AT19-1-1"],
+    depth==15 & sample=="AT19-1-2" ~ dd_pan_age_clean_BULK$weight_top[dd_pan_age_clean_BULK$sample=="AT19-1-2"],
+    depth==15 & sample=="AT19-1-3" ~ dd_pan_age_clean_BULK$weight_top[dd_pan_age_clean_BULK$sample=="AT19-1-3"],
+    depth==15 & sample=="JC22-2-1" ~ dd_pan_age_clean_BULK$weight_top[dd_pan_age_clean_BULK$sample=="JC22-2-1"],
+    depth==15 & sample=="JC22-2-2" ~ dd_pan_age_clean_BULK$weight_top[dd_pan_age_clean_BULK$sample=="JC22-2-2"],
+    depth==15 & sample=="JC22-2-3" ~ dd_pan_age_clean_BULK$weight_top[dd_pan_age_clean_BULK$sample=="JC22-2-3"],
+    TRUE ~ sed_weight_kg)) %>%
+  mutate(no_years = case_when( #estimated number of years
+    depth==15 & sample=="BF18-1-11" ~ dd_pan_age_clean_BULK$years_top[dd_pan_age_clean_BULK$sample=="BF18-1-11"],
+    depth==15 & sample=="BF18-1-12" ~ dd_pan_age_clean_BULK$years_top[dd_pan_age_clean_BULK$sample=="BF18-1-12"],
+    depth==15 & sample=="BF18-1-13" ~ dd_pan_age_clean_BULK$years_top[dd_pan_age_clean_BULK$sample=="BF18-1-13"],
+    depth==15 & sample=="AT19-1-1" ~ dd_pan_age_clean_BULK$years_top[dd_pan_age_clean_BULK$sample=="AT19-1-1"],
+    depth==15 & sample=="AT19-1-2" ~ dd_pan_age_clean_BULK$years_top[dd_pan_age_clean_BULK$sample=="AT19-1-2"],
+    depth==15 & sample=="AT19-1-3" ~ dd_pan_age_clean_BULK$years_top[dd_pan_age_clean_BULK$sample=="AT19-1-3"],
+    depth==15 & sample=="JC22-2-1" ~ dd_pan_age_clean_BULK$years_top[dd_pan_age_clean_BULK$sample=="JC22-2-1"],
+    depth==15 & sample=="JC22-2-2" ~ dd_pan_age_clean_BULK$years_top[dd_pan_age_clean_BULK$sample=="JC22-2-2"],
+    depth==15 & sample=="JC22-2-3" ~ dd_pan_age_clean_BULK$years_top[dd_pan_age_clean_BULK$sample=="JC22-2-3"],
+    TRUE ~ no_years)) %>% 
+  mutate(dd_kg_yr = case_when( #dd accumulation in pooled sample
+    depth==15 & sample=="BF18-1-11" ~ dd_pan_age_clean_BULK$dd_kg_yr_top[dd_pan_age_clean_BULK$sample=="BF18-1-11"],
+    depth==15 & sample=="BF18-1-12" ~ dd_pan_age_clean_BULK$dd_kg_yr_top[dd_pan_age_clean_BULK$sample=="BF18-1-12"],
+    depth==15 & sample=="BF18-1-13" ~ dd_pan_age_clean_BULK$dd_kg_yr_top[dd_pan_age_clean_BULK$sample=="BF18-1-13"],
+    depth==15 & sample=="AT19-1-1" ~ dd_pan_age_clean_BULK$dd_kg_yr_top[dd_pan_age_clean_BULK$sample=="AT19-1-1"],
+    depth==15 & sample=="AT19-1-2" ~ dd_pan_age_clean_BULK$dd_kg_yr_top[dd_pan_age_clean_BULK$sample=="AT19-1-2"],
+    depth==15 & sample=="AT19-1-3" ~ dd_pan_age_clean_BULK$dd_kg_yr_top[dd_pan_age_clean_BULK$sample=="AT19-1-3"],
+    depth==15 & sample=="JC22-2-1" ~ dd_pan_age_clean_BULK$dd_kg_yr_top[dd_pan_age_clean_BULK$sample=="JC22-2-1"],
+    depth==15 & sample=="JC22-2-2" ~ dd_pan_age_clean_BULK$dd_kg_yr_top[dd_pan_age_clean_BULK$sample=="JC22-2-2"],
+    depth==15 & sample=="JC22-2-3" ~ dd_pan_age_clean_BULK$dd_kg_yr_top[dd_pan_age_clean_BULK$sample=="JC22-2-3"],
+    TRUE ~ dd_kg_yr))
+
+```
+
+Filtering out samples with anomalously high reef accretion rates compared with previous work in the region. Loose framework at top of cores potentially creating inflated time estimates (see Toth et al. 2012).
+
+```{r}
+
+dd_pan_age_clean <- dd_pan_age_clean %>%
+  filter(no_years>5) #cutoff = 1cm/yr (10m/1000y), vs. previous work showing accretion rates within 5m/1000y (e.g., Toth et al. 2012)
+
+```
+
+Adding a couple of columns for the models we'll build below
+
+```{r}
+
+dd_pan_age_clean <- dd_pan_age_clean %>%
+  mutate(log_sed_weight_kg = log(sed_weight_kg),
+         log_no_years = log(no_years),
+         site_age = factor(paste0(site_name, " ", age_group)),
+         sample_age = factor(paste0(sample, " ", age_group)))
+
+```
+
+Save the clean data
+
+```{r}
+
+#write.csv(dd_pan_age_clean,"clean/dd_pan_age_clean.csv")
+
+```
+
+### Sample sizes for analysis
+
+```{r}
+
+#samples by basin, after cleaning and filtering
+table(dd_pan_age_clean$basin)
+
+#total denticle count
+sum(dd_pan_age_clean$total_dd_count,na.rm=T)
+
+#mean no_years per sample
+mean(dd_pan_age_clean$no_years,na.rm=T)
+
+#denticle count per basin
+dd_pan_age_clean %>% 
+  group_by(basin) %>% 
+  summarize(dd = sum(total_dd_count,na.rm=T))
+
+#denticle count by basin and time period
+dd_pan_age_clean %>% 
+  group_by(basin,age_group) %>% 
+  summarize(dd = sum(total_dd_count,na.rm=T),
+            n = n())
+
+#sample sizes by basin, site, and time period for table S2
+dd_pan_age_clean %>% 
+  group_by(basin,age_group,site_name) %>% 
+  summarize(dd = sum(total_dd_count,na.rm=T),
+            kg = sum(sed_weight_kg,na.rm=T),
+            n = n())
+
+```
+
+## Modeling denticle accumulation rates
+
+Split the data by basin, given the differences in sampling and data structures.
+
+```{r}
+
+dd_pan_carib <- dd_pan_age_clean %>% 
+  filter(basin=="Caribbean") %>% 
+  droplevels()
+
+dd_pan_pac <- dd_pan_age_clean %>% 
+  filter(basin=="Pacific")%>% 
+  droplevels() %>% 
+  drop_na(total_dd_count)
+
+```
+
+View relevant variables.
+
+```{r}
+
+#Caribbean
+pairs.panels(dd_pan_carib %>% select(total_dd_count,log_sed_weight_kg,log_no_years,age_group))
+
+#Pacific
+pairs.panels(dd_pan_pac %>% select(total_dd_count,log_sed_weight_kg,log_no_years,age_group))
+
+```
+
+### Caribbean
+
+Fit models.
+
+```{r}
+
+#testing several model structures
+
+m1_carib <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|site_name/unique) + offset(log(no_years)), 
+                    data=dd_pan_carib,
+                    family=poisson,
+                    REML=T)
+
+
+m2_carib <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|site_name) + offset(log(no_years)), 
+                    data=dd_pan_carib,
+                    family=nbinom2,
+                    REML=T)
+
+
+m3_carib <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|sample_age) + offset(log(no_years)),
+              data=dd_pan_carib,
+              family=nbinom2,
+              REML=T)
+
+
+m4_carib <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|sample_age/unique) + offset(log(no_years)),
+              data=dd_pan_carib,
+              family=nbinom2,
+              REML=T)
+
+
+#assign to testing
+model_to_test_carib <- m3_carib
+
+```
+
+Test model diagnostics.
+
+```{r}
+
+#DHARMa
+
+model_sim_carib <- simulateResiduals(model_to_test_carib,n=1000)
+plot(model_sim_carib)
+testDispersion(model_sim_carib)
+
+testCategorical(model_sim_carib,catPred=dd_pan_carib$age_group)
+testQuantiles(model_sim_carib,predictor=dd_pan_carib$log_sed_weight_kg)
+testQuantiles(model_sim_carib,predictor=log(dd_pan_carib$no_years))
+
+```
+
+Source function to run conditional simulations.
+
+```{r}
+#| label: setup
+#| include: false
+source("functions/model_fit.R")
+
+```
+
+```{r}
+
+#Conditional simulations
+
+sim_data <- simulate_data(model_to_test_carib, nsim=5000)
+
+dharma_resid <- createDHARMa(simulatedResponse=sim_data$sim,
+                             observedResponse=dd_pan_carib$total_dd_count,
+                             fittedPredictedResponse=sim_data$mu)
+
+plot(dharma_resid, quantreg=TRUE)
+plotResiduals(dharma_resid, form=dd_pan_carib$log_sed_weight_kg)
+plotResiduals(dharma_resid, form=dd_pan_carib$site_age)
+plotResiduals(dharma_resid, form=dd_pan_carib$age_group)
+plotResiduals(dharma_resid, form=log(dd_pan_carib$no_years))
+
+```
+
+Compare models.
+
+```{r}
+
+AIC(m1_carib,m2_carib,m3_carib,m4_carib) #M3 has lowest AIC
+
+```
+
+Model summary.
+
+```{r}
+
+model_selected_carib <- m3_carib
+
+summary(model_selected_carib)
+
+```
+
+Likelihood Ratio Test to obtain p-value and test statistic.
+
+```{r}
+
+#full model
+m3_carib_full <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|sample_age) + offset(log(no_years)),
+              data=dd_pan_carib,
+              family=nbinom2,
+              REML=F)
+
+
+#same model structure, with age_group dropped
+m3_carib_drop <- glmmTMB(total_dd_count ~ log_sed_weight_kg + (1|sample_age) + offset(log(no_years)),
+              data=dd_pan_carib,
+              family=nbinom2,
+              REML=F)
+
+
+#compare, statistically significant difference
+anova(m3_carib_full,m3_carib_drop)
+
+```
+
+### Pacific
+
+Fit models.
+
+```{r}
+
+#testing several model structures
+
+m1_pac <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|sample_age) + offset(log(no_years)),
+              data=dd_pan_pac,
+              family=nbinom2,
+              REML=T)
+
+
+m2_pac <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|site_age) + offset(log(no_years)),
+              data=dd_pan_pac,
+              family=nbinom2,
+              REML=T)
+
+
+m3_pac <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|sample_age/unique) + offset(log(no_years)),
+              data=dd_pan_pac,
+              family=nbinom2,
+              REML=T) 
+
+
+m4_pac <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|site_name/sample/unique) + offset(log(no_years)),
+                  data=dd_pan_pac,
+                  family=poisson,
+                  REML=T)
+
+
+m5_pac <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|site_name/sample) + offset(log(no_years)),
+                  data=dd_pan_pac,
+                  family=poisson,
+                  REML=T)
+
+
+m6_pac <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|site_name/sample) + offset(log(no_years)),
+                  data=dd_pan_pac,
+                  family=nbinom2,
+                  REML=T)
+
+
+m7_pac <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|sample_age) + offset(log(no_years)),
+              data=dd_pan_pac,
+              disp=~age_group,
+              family=nbinom2,
+              REML=T)
+
+
+#assign to testing
+model_to_test_pac <- m1_pac
+
+```
+
+Test model diagnostics.
+
+```{r}
+
+#DHARMa
+
+model_sim_pac <- simulateResiduals(model_to_test_pac,n=1000)
+plot(model_sim_pac)
+testDispersion(model_sim_pac)
+
+testCategorical(model_sim_pac,catPred=dd_pan_pac$age_group)
+testQuantiles(model_sim_pac,predictor=dd_pan_pac$log_sed_weight_kg)
+testQuantiles(model_sim_pac,predictor=log(dd_pan_pac$no_years))
+
+
+```
+
+```{r}
+
+#Conditional simulations
+
+sim_data <- simulate_data(model_to_test_pac, nsim=5000)
+
+dharma_resid <- createDHARMa(simulatedResponse=sim_data$sim,
+                             observedResponse=dd_pan_pac$total_dd_count,
+                             fittedPredictedResponse=sim_data$mu)
+
+plot(dharma_resid, quantreg=TRUE)
+plotResiduals(dharma_resid, form=dd_pan_pac$log_sed_weight_kg)
+plotResiduals(dharma_resid, form=dd_pan_pac$site_age)
+plotResiduals(dharma_resid, form=dd_pan_pac$age_group)
+plotResiduals(dharma_resid, form=log(dd_pan_pac$no_years))
+
+```
+
+Test temporal autocorrelation.
+
+```{r}
+
+fit_sim_time <- recalculateResiduals(model_sim_pac, group = dd_pan_pac$age_AD_BC)
+testTemporalAutocorrelation(fit_sim_time, time = unique(dd_pan_pac$age_AD_BC))
+
+#no significant temporal autocorrelation
+
+```
+
+Compare models.
+
+```{r}
+
+AIC(m1_pac,m2_pac,m3_pac,m4_pac,m5_pac,m6_pac,m7_pac) #M1 has lowest AIC (followed by M3 and M7)
+
+```
+
+Model summary.
+
+```{r}
+
+model_selected_pac <- m1_pac
+
+summary(model_selected_pac)
+
+```
+
+Likelihood Ratio Test to obtain p-value and test statistic.
+
+```{r}
+
+#full model
+m1_pac_full <- glmmTMB(total_dd_count ~ age_group + log_sed_weight_kg + (1|sample_age) + offset(log(no_years)),
+              data=dd_pan_pac,
+              family=nbinom2,
+              REML=F)
+
+
+#same model structure, with age_group dropped
+m1_pac_drop <- glmmTMB(total_dd_count ~ log_sed_weight_kg + (1|sample_age) + offset(log(no_years)),
+              data=dd_pan_pac,
+              family=nbinom2,
+              REML=F)
+
+
+#compare, difference not statistically significant
+anova(m1_pac_full,m1_pac_drop)
+
+```
+
+### Estimated marginal means
+
+```{r}
+
+#predict for 1 kg over 100 yr
+yr_predict <-100
+offset_value_predict <- log(yr_predict)
+
+
+#Pacific
+ef_pac <- effect("age_group", model_selected_pac,
+                         given.values=c(log_sed_weight_kg=0), #1kg
+                         offset=offset_value_predict)
+                         
+summary(ef_pac)
+
+
+#Caribbean
+ef_carib <- effect("age_group", model_selected_carib,
+                         given.values=c(log_sed_weight_kg=0), #1kg
+                         offset=offset_value_predict)
+
+summary(ef_carib)
+
+
+#combine and add region info for plotting
+ef_pac_df <- as.data.frame(ef_pac) %>% 
+  add_column(region='Gulf of Panama',.before="age_group")
+ef_carib_df <- as.data.frame(ef_carib)%>% 
+  add_column(region='Bocas del Toro',.before="age_group")
+
+ef_pan_df <- rbind(ef_carib_df,ef_pac_df) %>% 
+  mutate(age_group = fct_relevel(age_group,c("pre_exp","modern")))
+
+
+#test plot
+ggplot(ef_pan_df, aes(x=region, y=fit,color=age_group)) +
+  geom_pointrange(aes(ymin=fit-se, ymax=fit+se), position=position_jitterdodge(seed=123),size=1) + 
+  theme_bw()+
+  labs(y="Denticle accumulation per kg sediment per century",x="Region",color="Age group") +
+  scale_x_discrete(limits=c("Gulf of Panama","Bocas del Toro"),labels=c("Gulf of Panama","Bocas del Toro"))+
+  scale_y_continuous(trans='log10')+
+  theme(aspect.ratio=1)
+
+```
+
+Model-derived magnitude of change estimates.
+
+```{r}
+
+#Caribbean change over time
+modern_carib <- ef_pan_df[2,3]
+holocene_carib <- ef_pan_df[1,3]
+
+(modern_carib-holocene_carib)/holocene_carib*100 
+
+#Pacific change over time
+modern_pac <- ef_pan_df[4,3]
+holocene_pac <- ef_pan_df[3,3]
+
+(modern_pac-holocene_pac)/holocene_pac*100 
+
+#Cross-isthmian difference
+holocene_pac/holocene_carib 
+modern_pac/modern_carib 
+
+```
+
+Emmeans, for each regional model.
+
+```{r}
+
+#Pacific
+emm_pacific <- emmeans(
+  model_selected_pac,
+  ~ age_group)
+
+pairs(emm_pacific)
+pairs(emm_pacific, type="response")
+confint(pairs(emm_pacific), type="response")
+summary(emm_pacific, type="response")
+
+
+#Caribbean
+emm_carib <- emmeans(
+  model_selected_carib,
+  ~ age_group)
+
+pairs(emm_carib)
+pairs(emm_carib, type="response")
+confint(pairs(emm_carib), type="response")
+summary(emm_carib, type="response")
+
+```
+
+Predictions (for each unique sample_age), for plotting.
+
+```{r}
+
+#Caribbean
+
+#set up data frame to predict
+predictions_carib = 
+  data.frame(
+    basin = dd_pan_carib$basin,
+    region = dd_pan_carib$region,
+    site_name = dd_pan_carib$site_name,
+    sample = dd_pan_carib$sample,
+    age_group = dd_pan_carib$age_group,
+    sample_age = dd_pan_carib$sample_age,
+    unique = dd_pan_carib$unique,
+    no_years = yr_predict, #100 yr
+    log_sed_weight_kg = 0 #1kg
+  ) 
+
+#make predictions
+predictions_carib_output <- predict(model_selected_carib, newdata = predictions_carib, type = 'response',se.fit=T)
+
+predictions_carib <- predictions_carib %>% 
+  mutate(prediction_fit = predictions_carib_output$fit,
+         prediction_se = predictions_carib_output$se.fit) 
+
+
+
+#Pacific
+
+#set up data frame to predict
+predictions_pac = 
+  data.frame(
+    basin = dd_pan_pac$basin,
+    region = dd_pan_pac$region,
+    site_name = dd_pan_pac$site_name,
+    sample = dd_pan_pac$sample,
+    age_group = dd_pan_pac$age_group,
+    sample_age = dd_pan_pac$sample_age,
+    unique = dd_pan_pac$unique,
+    no_years = yr_predict, #100 yr
+    log_sed_weight_kg = 0 #1kg
+  ) 
+
+#make predictions
+predictions_pac_output <- predict(model_selected_pac, newdata = predictions_pac, type = 'response',se.fit=T)
+
+predictions_pac <- predictions_pac %>% 
+  mutate(prediction_fit = predictions_pac_output$fit,
+         prediction_se = predictions_pac_output$se.fit) 
+
+
+
+#Combine
+predictions_combined <- rbind(predictions_carib,predictions_pac) %>% 
+  mutate(age_group = fct_relevel(age_group,c("pre_exp","modern")))
+
+
+#Pulling out the distinct sample_age predictions
+predictions_combined_distinct <- predictions_combined %>% 
+  select(basin,region,sample,site_name,age_group,sample_age,prediction_fit,prediction_se) %>% 
+  distinct()
+
+```
+
+### Model-estimated denticle accumulation rates (Figure 1)
+
+```{r fig.height=3}
+
+fig1 <- ggplot(ef_pan_df, aes(x=region, y=fit,shape=age_group)) +
+  geom_linerange(data=predictions_combined_distinct, aes(y=prediction_fit,ymin=prediction_fit-prediction_se,ymax=prediction_fit+prediction_se),position=position_jitterdodge(jitter.width=0.5,seed=10),linetype="solid",alpha=0.4,color="gray70")+
+  geom_point(data=predictions_combined_distinct,aes(x=region, y=prediction_fit),alpha=0.4,size=2,position=position_jitterdodge(jitter.width=0.5,seed=10),color="gray70",fill="gray70")+
+  geom_pointrange(aes(ymin=fit-se, ymax=fit+se,shape=age_group,fill=region),color='black',fatten=4,size=1.5, position=position_jitterdodge(seed=10)) + 
+  theme_bw(base_size=12)+
+  labs(y="Denticle accumulation per kg sediment per century",x="",shape="Time period",fill="Region") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_x_discrete(limits=c("Bocas del Toro","Gulf of Panama"),labels=c("Caribbean\n(Bocas del Toro)","Pacific\n(Gulf of Panama)"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  theme(panel.grid.minor = element_blank())+
+  theme(legend.position = "bottom")+
+  annotation_logticks(sides="l")+
+  scale_y_continuous(trans='log10')+
+  guides(fill="none")+
+  theme(aspect.ratio=1.5)
+fig1
+
+```
+
+Save Fig. 1 output.
+
+```{r fig.height=3}
+
+#ggsave("figures/fig1.pdf",plot=fig1,device="pdf",useDingbats=FALSE)
+
+```
+
+### Parametric bootstrap (figure S10)
+
+Caribbean
+
+```{r}
+
+#fitted model
+model_selected_carib
+
+#create an object to store the results
+boot_change_carib <- rep(NA,500)
+
+#simulate data from the model
+sim_carib <- simulate(model_selected_carib,nsim=500)
+
+
+#refit model to new data
+for(i in 1:500){
+  #adding simulated data to the df with the empirical observations
+  dd_pan_carib$sim_col <- sim_carib[,i] 
+  #model with sim data as response, no random effects
+  m_boot1 <- glmmTMB(sim_col ~ age_group + log_sed_weight_kg + offset(log(no_years)), 
+              data=dd_pan_carib,
+              family=nbinom2,
+              REML=T)
+  #pull coeff for fixed effects from the model run
+  fix_effects <- fixef(m_boot1) 
+  modern <- exp(fix_effects$cond[1]+fix_effects$cond[2])
+  holocene <- exp(fix_effects$cond[1])
+  #percent change, using fixed effects estimates from the model
+  boot_change_carib[i] <- ((modern-holocene)/holocene)*100 
+}
+
+#check distribution
+hist(boot_change_carib)
+
+
+#mean + SD
+mean(boot_change_carib) 
+sd(boot_change_carib)
+
+```
+
+Pacific
+
+```{r}
+
+#fitted model
+model_selected_pac
+
+
+#create an object to store the results
+boot_change_pac <- rep(NA,500)
+
+#simulate data from the model
+sim_pac <- simulate(model_selected_pac,nsim=500)
+
+
+#refit model to new data
+for(i in 1:500){
+  dd_pan_pac$sim_col <- sim_pac[,i] 
+  m_boot1 <- glmmTMB(sim_col ~ age_group + log_sed_weight_kg + offset(log(no_years)), 
+              data=dd_pan_pac,
+              family=nbinom2,
+              REML=T) 
+  fix_effects <- fixef(m_boot1) 
+  modern <- exp(fix_effects$cond[1]+fix_effects$cond[2])
+  holocene <- exp(fix_effects$cond[1])
+  boot_change_pac[i] <- ((modern-holocene)/holocene)*100 
+}
+
+#check distribution
+hist(boot_change_pac)
+
+#central tendency
+mean(boot_change_pac)
+sd(boot_change_pac)
+
+```
+
+Combine and plot.
+
+```{r fig.height=3}
+#combine bootstrap runs
+boot_change_pac <- as.data.frame(boot_change_pac) %>% 
+  mutate(region="Pacific") %>% 
+  rename(rel_change=boot_change_pac)
+
+boot_change_carib <- as.data.frame(boot_change_carib) %>% 
+  mutate(region="Caribbean") %>% 
+  rename(rel_change=boot_change_carib)
+
+boot_combined <- rbind(boot_change_pac,boot_change_carib)
+
+
+#plot
+figS10 <- ggplot(boot_combined,aes(x=region, y=rel_change, fill=region))+
+  geom_hline(yintercept=0,color="gray30",linetype=1)+
+  geom_violin(adjust=2,color='gray90',fill="gray90",scale="width",alpha=0.7)+
+  geom_boxplot(aes(fill=region),alpha=0.9,outlier.shape = NA,width=0.15)+
+  theme_bw(base_size=12)+
+  labs(y="Bootstrapped percent change \nbetween pre-exploitation and sub-recent periods",x="Region") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_x_discrete(limits=c("Caribbean","Pacific"),labels=c("Caribbean\n(Bocas del Toro)","Pacific\n(Gulf of Panama)"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  coord_cartesian(ylim = c(-100,750))+
+  theme(legend.position = "none")+
+  theme(aspect.ratio=1.5)
+figS10
+```
+
+Save output (fig. S10).
+
+```{r fig.height=3}
+
+#ggsave("figures/figS10.pdf",plot=figS10,device="pdf",useDingbats=FALSE)
+
+```
+
+## Supplementary figures
+
+### figure S2
+
+```{r fig.height=5,fig.width=7}
+
+#Add dates
+dates_all <- read.csv("data/dates_pacific_panama.csv",header=T,na.strings=".")
+
+#Filter to sites and cores used in this study
+bchron_age_depth_LP <- bchron_age_depth %>% 
+  filter(region=='Gulf of Panama') %>% 
+  filter(!sample %in% c("AT19-1-4","BF18-1-14"))
+
+dates_LP <- dates_all %>% 
+  filter(region=='Gulf of Panama') %>%
+  filter(!sample %in% c("AT19-1-4","BF18-1-14"))
+
+#Draw cut-off lines
+vlines <- data.frame(
+  date_locality = c("Contadora", "Saboga", "Isla Iguana"),
+  vline1 = c(-2000, -1000, -2000),
+  vline2 = c(1900, 1900, 1900)
+)
+
+#Plot age CE/BCE
+figS2 <-  ggplot(bchron_age_depth_LP,aes(x=predicted_age_median,y=depth))+
+  geom_vline(data = vlines, aes(xintercept = vline1),
+             color = "gray40", linetype = "dashed") +
+  geom_vline(data = vlines, aes(xintercept = vline2),
+             color = "gray40", linetype = "dashed") +
+  geom_line(aes(color=sample),size=1)+
+  geom_ribbon(aes(xmin=(1950-min),xmax=(1950-max),fill=sample),alpha=0.3)+
+  geom_point(data=dates_LP,aes(x=U_Th_age,y=depth,color=sample),size=2)+
+  labs(x='Age (CE/BCE)', y='Depth (cm)',color='Core',fill='Core')+
+  scale_y_reverse()+
+  scale_x_continuous(breaks = seq(-6000,2000,1000))+
+  theme_bw()+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans"))+
+  facet_wrap(~date_locality,nrow=3,ncol=1)+
+  theme(aspect.ratio = 0.7)+
+  theme(strip.background = element_rect(fill = NA, color = NA),
+        strip.text = element_text(size = 16))
+figS2
+
+```
+
+Save output (fig. S2).
+
+```{r fig.height=7,fig.width=7}
+
+#ggsave("figures/figS2.pdf",plot=figS2,device="pdf",useDingbats=FALSE,height=12,width=12)
+
+```
+
+### figure S3
+
+```{r}
+
+figS3 <- dd_pan_age_clean %>% 
+  filter(basin=="Pacific") %>%
+ggplot(aes(x=age_AD_BC, y=age_group))+
+  geom_density_ridges(color="deepskyblue3",fill="deepskyblue3",alpha=0.2,size=1) +
+  theme_ridges() +
+  #Caribbean site ages
+  geom_rect(xmin=1651,xmax=2014,ymin=1.7,ymax=1.9,fill='darkgoldenrod2',alpha=0.05)+
+  geom_rect(xmin=-5200,xmax=-3700,ymin=0.7,ymax=0.9,fill='darkgoldenrod2',alpha=0.05)+
+  theme_bw()+
+  labs(x="Sample age (CE/BCE)",y="Time period") +
+  scale_y_discrete(limits=c("pre_exp","modern"),labels=c("Pre-exploitation","Sub-recent"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  theme(aspect.ratio=0.5)
+figS3
+
+```
+
+Save output (fig. S3).
+
+```{r}
+
+#ggsave("figures/figS3.pdf",plot=figS3,device="pdf",useDingbats=FALSE)
+#ggsave("figures/figS3.png",plot=figS3,device="png")
+
+```
+
+### figure S4
+
+Temporal resolution of data.
+
+```{r fig.width=4}
+
+#by region & time period
+region_time_means <- dd_pan_age_clean %>% 
+  group_by(region,age_group) %>% 
+  summarize(mean_years = mean(no_years,na.rm=T),
+            sd_years = sd(no_years,na.rm=T),
+            se_years = sd(no_years,na.rm=T)/sqrt(length(no_years)))
+region_time_means
+
+
+figS4A <- ggplot(region_time_means,aes(x=region, y=mean_years, shape=age_group))+
+  geom_pointrange(aes(ymin=mean_years-se_years, ymax=mean_years+se_years,shape=age_group,fill=region),color='black',fatten=3.5,size=1.5, position=position_jitterdodge(seed=10)) +
+  theme_bw()+
+  labs(y="Number of years per sample",x="Region",fill="Region",shape="Time period") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_x_discrete(limits=c("Bocas del Toro","Gulf of Panama"),labels=c("Caribbean\n(Bocas del Toro)","Pacific\n(Gulf of Panama)"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  guides(fill="none")+
+  scale_y_continuous(trans='log10',limits = c(10, 500))+
+  annotation_logticks(sides="l")+
+  theme(legend.position = "none")+
+  theme(aspect.ratio=1.5)
+figS4A
+
+
+#by site
+site_time_means <- dd_pan_age_clean %>% 
+  group_by(region,site_name,age_group) %>% 
+  summarize(mean_years = mean(no_years,na.rm=T),
+            sd_years = sd(no_years,na.rm=T),
+            se_years = sd(no_years,na.rm=T)/sqrt(length(no_years)))
+site_time_means
+
+figS4B <- ggplot(site_time_means,aes(x=site_name, y=mean_years, shape=age_group))+
+  geom_pointrange(aes(ymin=mean_years-se_years, ymax=mean_years+se_years,shape=age_group,fill=region),color='black',fatten=3.5,size=1.5, position=position_jitterdodge(seed=10)) +
+  theme_bw()+
+  labs(y="",x="Site",fill="Region",shape="Time period") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_x_discrete(limits=c("Sweet Bocas","Casa Blanca","Cayo Adriana","Punta Donato","Isla Iguana","Saboga","Contadora"),labels=c("Sweet\nBocas","Casa\nBlanca","Cayo\nAdriana","Punta\nDonato","Isla\nIguana","Saboga","Contadora"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  guides(fill="none")+
+  scale_y_continuous(trans='log10',limits = c(10, 500))+
+  annotation_logticks(sides="l")+
+  theme(legend.position = "bottom")+
+  theme(aspect.ratio=1)
+figS4B
+
+```
+
+Combine and save output (fig. S4).
+
+```{r fig.width=5}
+
+figS4 <- figS4A+figS4B+
+  plot_annotation(tag_levels = 'A')&
+  theme(
+    plot.tag = element_text(size = 18, face = "bold"))
+figS4
+
+
+#save output
+#ggsave("figures/figS4.png",plot=figS4,device="png")
+
+```
+
+### figure S5
+
+Calculate means for plotting.
+
+```{r}
+
+denticle_means <- dd_pan_age_clean %>% 
+  mutate(dd_accum_century = (total_dd_count/sed_weight_kg/no_years)*100) %>% 
+  group_by(region) %>% 
+  summarize(mean_count = mean(total_dd_count,na.rm=T),
+            mean_abundance = mean(dd_kg,na.rm=T),
+            mean_accumulation = mean(dd_accum_century,na.rm=T),
+            sd_count = sd(total_dd_count,na.rm=T),
+            sd_abundance = sd(dd_kg,na.rm=T),
+            sd_accumulation = sd(dd_accum_century,na.rm=T))
+
+denticle_means
+```
+
+Denticle counts (fig. S5A)
+
+```{r fig.height=3}
+
+figS5A <- ggplot(dd_pan_age_clean, aes(x=total_dd_count, y=site_name, shape=age_group,fill=region)) +
+  geom_vline(xintercept=denticle_means$mean_count[2],color="deepskyblue3",linetype=2,linewidth=0.8)+
+  geom_vline(xintercept=denticle_means$mean_count[1],color="darkgoldenrod2",linetype=2,linewidth=0.8)+
+  geom_point(alpha=0.4,size=2.5,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70",fill="gray70")+
+  geom_boxplot(aes(fill=region),alpha=0.8,outlier.shape = NA,width=0.2,position=position_dodge(width = 0.7))+
+  theme_bw()+
+  labs(x="Number of denticles",y="Site",shape="Time period",fill="Region") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_y_discrete(limits=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"),labels=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  theme(panel.grid.minor = element_blank())+
+  theme(legend.position = "none")+
+  annotation_logticks(sides="b")+
+  scale_x_continuous(trans='log10')+
+  theme(aspect.ratio=1.75)
+figS5A
+
+```
+
+Denticle abundances (fig. S5B)
+
+```{r fig.height=3}
+
+figS5B <- ggplot(dd_pan_age_clean, aes(x=dd_kg, y=site_name, shape=age_group,fill=region)) +
+  geom_vline(xintercept=denticle_means$mean_abundance[2],color="deepskyblue3",linetype=2,linewidth=0.8)+
+  geom_vline(xintercept=denticle_means$mean_abundance[1],color="darkgoldenrod2",linetype=2,linewidth=0.8)+
+  geom_point(alpha=0.4,size=2.5,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70",fill="gray70")+
+  geom_boxplot(aes(fill=region),alpha=0.8,outlier.shape = NA,width=0.2,position=position_dodge(width = 0.7))+
+  theme_bw()+
+  labs(x="Denticles per kg sediment",y="",shape="Time period",fill="Region") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_y_discrete(limits=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"),labels=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  theme(panel.grid.minor = element_blank())+
+  theme(legend.position = "none")+
+  annotation_logticks(sides="b")+
+  scale_x_continuous(trans='log10')+
+  theme(aspect.ratio=1.75)
+figS5B
+
+```
+
+Denticle accumulations (fig. S5C)
+
+```{r fig.height=3}
+
+figS5C <- ggplot(dd_pan_age_clean, aes(x=(total_dd_count/sed_weight_kg/no_years)*100, y=site_name, shape=age_group,fill=region)) +
+  geom_vline(xintercept=denticle_means$mean_accumulation[2],color="deepskyblue3",linetype=2,linewidth=0.8)+
+  geom_vline(xintercept=denticle_means$mean_accumulation[1],color="darkgoldenrod2",linetype=2,linewidth=0.8)+
+  geom_point(alpha=0.4,size=2.5,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70",fill="gray70")+
+  geom_boxplot(aes(fill=region),alpha=0.8,outlier.shape = NA,width=0.2,position=position_dodge(width = 0.7))+
+  theme_bw()+
+  labs(x="Denticles per kg sediment\nper century",y="",shape="Time period",fill="Region") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_y_discrete(limits=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"),labels=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  theme(panel.grid.minor = element_blank())+
+  theme(legend.position = "right")+ 
+  annotation_logticks(sides="b")+
+  scale_x_continuous(trans='log10')+
+  theme(aspect.ratio=1.75)
+figS5C
+
+```
+
+Combine and save output (fig. S5).
+
+```{r fig.height=3,fig.width=8,warning=F}
+
+figS5 <- figS5A+figS5B+figS5C+
+  plot_annotation(tag_levels = 'A')&
+  theme(
+    plot.tag = element_text(size = 18, face = "bold"))
+figS5
+
+
+#save output
+#ggsave("figures/figS5.pdf",plot=figS5,device="pdf",useDingbats=FALSE)
+
+```
+
+### figure S7
+
+Model predictions vs. raw data, with time uncertainty visualized.
+
+```{r fig.height=3}
+
+figS7 <- ggplot(ef_pan_df, aes(x=region, y=fit,shape=age_group)) +
+  geom_linerange(data=dd_pan_age_clean,aes(y=((total_dd_count/sed_weight_kg/no_years)*100),ymin=((total_dd_count/sed_weight_kg/no_years_75)*100),ymax=((total_dd_count/sed_weight_kg/no_years_25)*100)),position=position_jitterdodge(jitter.width=0.6,seed=10),linetype="solid",alpha=0.4,color="gray80")+
+  geom_point(data=dd_pan_age_clean,aes(x=region, y=(total_dd_count/sed_weight_kg/no_years)*100),alpha=0.4,size=2,position=position_jitterdodge(jitter.width=0.6,seed=10),color="gray80",fill="gray80")+
+  geom_pointrange(aes(ymin=fit-se, ymax=fit+se,shape=age_group,fill=region),color='black',fatten=4,size=1.4, position=position_jitterdodge(seed=10)) + 
+  theme_bw(base_size=12)+
+  labs(y="Denticle accumulation per kg sediment per century",x="Region",shape="Time period",fill="Region") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_x_discrete(limits=c("Bocas del Toro","Gulf of Panama"),labels=c("Caribbean\n(Bocas del Toro)","Pacific\n(Gulf of Panama)"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  theme(panel.grid.minor = element_blank())+
+  theme(legend.position = "bottom")+
+  annotation_logticks(sides="l")+
+  scale_y_continuous(trans='log10')+
+  guides(fill="none")+
+  theme(aspect.ratio=1.5)
+figS7
+
+```
+
+Save output (fig. S7).
+
+```{r}
+
+#ggsave("figures/figS7.png",plot=figS7,device="png")
+
+```
+
+### figure S14
+
+Variation in sample weights.
+
+```{r fig.width=4}
+
+figS14 <- ggplot(dd_pan_age_clean,aes(x=region, y=sed_weight_kg, fill=region, shape=age_group))+
+  geom_point(alpha=0.4,size=2,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70",fill="gray70")+
+  geom_boxplot(aes(fill=region),alpha=0.8,outlier.shape = NA,width=0.2,position=position_dodge(width = 0.7))+
+  theme_bw()+
+  labs(y="Sample weight (kg)",x="Region",shape="Time period",fill="Region") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_x_discrete(limits=c("Bocas del Toro","Gulf of Panama"),labels=c("Caribbean\n(Bocas del Toro)","Pacific\n(Gulf of Panama)"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  guides(fill="none")+
+  annotation_logticks(sides="l")+
+  scale_y_continuous(trans='log10')+
+  theme(legend.position = "bottom")+
+  theme(aspect.ratio=1.5)
+figS14
+
+```
+
+Save output (fig. S14).
+
+```{r fig.width=4}
+
+#ggsave("figures/figS14.pdf",plot=figS14,device="pdf",useDingbats=FALSE)
+
+```
+
+### figure S15
+
+```{r}
+
+#denticle counts x sediment weight
+figS15A <- ggplot(dd_pan_age_clean,aes(x=sed_weight_kg,y=total_dd_count))+
+  geom_point(aes(shape=age_group,fill=region),color='gray30',alpha=0.8,size=2.5)+
+  theme_bw()+
+  labs(x="Sample weight (kg)",y="Number of denticles",shape="Time period",fill="Region") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  guides(fill="none")+
+  theme(legend.position = "none")+
+  scale_y_continuous(trans='log10')+
+  scale_x_continuous(trans='log10')+
+  theme(aspect.ratio=1)+
+  facet_grid(~basin,scales = "free")+
+  theme(strip.background = element_rect(fill = NA, color = NA),
+        strip.text = element_text(size = 16))
+figS15A
+
+
+#sediment weight x no_years
+figS15B <- ggplot(dd_pan_age_clean,aes(x=sed_weight_kg,y=no_years))+
+  geom_point(aes(shape=age_group,fill=region),color='gray30',alpha=0.8,size=2.5)+
+  theme_bw()+
+  labs(x="Sample weight (kg)",y="Number of years per sample",fill="Region",shape="Time period") +
+  scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
+  theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
+  theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
+  guides(fill="none")+
+  theme(legend.position = "bottom")+
+  scale_y_continuous(trans='log10')+
+  scale_x_continuous(trans='log10')+
+  theme(aspect.ratio=1)+
+  facet_grid(~basin,scales = "free")+
+  theme(strip.background = element_rect(fill = NA, color = NA),
+        strip.text = element_text(size = 16))
+figS15B
+
+```
+
+Combine and save output (fig. S15).
+
+```{r fig.width=4,fig.height=4,warning=F}
+
+figS15 <- figS15A/figS15B+
+  plot_layout(widths = c(3,-8,3))+
+  plot_annotation(tag_levels = 'A')&
+  theme(
+    plot.tag = element_text(size = 18, face = "bold"))
+figS15
+
+
+#save output
+#ggsave("figures/figS15.png",plot=figS15,device="png")
+
+```
