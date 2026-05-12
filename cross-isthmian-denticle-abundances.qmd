@@ -106,8 +106,8 @@ Filtering to just core tops/bottoms to facilitate comparability across the isthm
 dd_pan_age_clean_pre <- dd_pan_age %>%
   #applying age cut-offs
   mutate(age_group = case_when(
-      age_AD_BC > 1900 ~ "modern", #last ~100 years
-      #Holocene, site-specific lower cut-offs given differences in accretion histories, and aiming for similar temporal range across basins
+      age_AD_BC > 1900 ~ "modern", #last ~century
+      #Holocene, site-specific cut-offs given differences in accretion histories, aiming for similar time range across basins
       site_name == "Contadora" & age_AD_BC < -2000 ~ "pre_exp",  
       site_name == "Isla Iguana" & age_AD_BC < -2000 ~ "pre_exp",
       site_name == "Saboga" & age_AD_BC < -1000 ~ "pre_exp", 
@@ -144,7 +144,7 @@ dd_pan_age_clean_BULK <- dd_pan_age_clean_pre %>%
   #summarize sample info for these top intervals
   summarize(dd_top = sum(total_dd_count,na.rm=T),
             weight_top = sum(sed_weight_kg,na.rm=T),
-            years_top = sampling_year-min(age_AD_BC)) %>% #median date lower sample
+            years_top = first(sampling_year)-min(age_AD_BC)) %>% #median date lower sample
   unique() %>% 
   mutate(dd_kg_yr_top = dd_top/weight_top/years_top)
 
@@ -205,7 +205,7 @@ dd_pan_age_clean <- dd_pan_age_clean_pre %>%
 
 ```
 
-Filtering out samples with anomalously high reef accretion rates compared with previous work in the region. Loose framework at top of cores potentially creating inflated time estimates (see Toth et al. 2012).
+Filtering out samples with anomalously high reef accretion rates compared with previous work in the region. Loose framework at top of cores is potentially creating inflated time estimates (see Toth et al. 2012), especially at Isla Iguana.
 
 ```{r}
 
@@ -614,7 +614,8 @@ Model-derived magnitude of change estimates.
 modern_carib <- ef_pan_df[2,3]
 holocene_carib <- ef_pan_df[1,3]
 
-(modern_carib-holocene_carib)/holocene_carib*100 
+(modern_carib-holocene_carib)/holocene_carib*100
+holocene_carib/modern_carib
 
 #Pacific change over time
 modern_pac <- ef_pan_df[4,3]
@@ -723,7 +724,7 @@ predictions_combined_distinct <- predictions_combined %>%
 
 ### Model-estimated denticle accumulation rates (Figure 1)
 
-```{r fig.height=3}
+```{r fig.height=7}
 
 fig1 <- ggplot(ef_pan_df, aes(x=region, y=fit,shape=age_group)) +
   geom_linerange(data=predictions_combined_distinct, aes(y=prediction_fit,ymin=prediction_fit-prediction_se,ymax=prediction_fit+prediction_se),position=position_jitterdodge(jitter.width=0.5,seed=10),linetype="solid",alpha=0.4,color="gray70")+
@@ -732,7 +733,7 @@ fig1 <- ggplot(ef_pan_df, aes(x=region, y=fit,shape=age_group)) +
   theme_bw(base_size=12)+
   labs(y="Denticle accumulation per kg sediment per century",x="",shape="Time period",fill="Region") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_x_discrete(limits=c("Bocas del Toro","Gulf of Panama"),labels=c("Caribbean\n(Bocas del Toro)","Pacific\n(Gulf of Panama)"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -749,9 +750,13 @@ fig1
 
 Save Fig. 1 output.
 
-```{r fig.height=3}
+```{r}
 
-#ggsave("figures/fig1.pdf",plot=fig1,device="pdf",useDingbats=FALSE)
+#ggsave("figures/fig1.pdf",plot=fig1,device="pdf",useDingbats=FALSE,height=7)
+
+#model outputs
+#write.csv(ef_pan_df,"clean/emm_dd_accum.csv")
+#write.csv(predictions_combined_distinct,"clean/predictions_dd_accum.csv")
 
 ```
 
@@ -772,6 +777,7 @@ sim_carib <- simulate(model_selected_carib,nsim=500)
 
 
 #refit model to new data
+set.seed(5)
 for(i in 1:500){
   #adding simulated data to the df with the empirical observations
   dd_pan_carib$sim_col <- sim_carib[,i] 
@@ -814,6 +820,7 @@ sim_pac <- simulate(model_selected_pac,nsim=500)
 
 
 #refit model to new data
+set.seed(5)
 for(i in 1:500){
   dd_pan_pac$sim_col <- sim_pac[,i] 
   m_boot1 <- glmmTMB(sim_col ~ age_group + log_sed_weight_kg + offset(log(no_years)), 
@@ -837,7 +844,7 @@ sd(boot_change_pac)
 
 Combine and plot.
 
-```{r fig.height=3}
+```{r}
 #combine bootstrap runs
 boot_change_pac <- as.data.frame(boot_change_pac) %>% 
   mutate(region="Pacific") %>% 
@@ -856,7 +863,7 @@ figS10 <- ggplot(boot_combined,aes(x=region, y=rel_change, fill=region))+
   geom_violin(adjust=2,color='gray90',fill="gray90",scale="width",alpha=0.7)+
   geom_boxplot(aes(fill=region),alpha=0.9,outlier.shape = NA,width=0.15)+
   theme_bw(base_size=12)+
-  labs(y="Bootstrapped percent change \nbetween pre-exploitation and sub-recent periods",x="Region") +
+  labs(y="Bootstrapped percent change \nbetween pre-exploitation and recent periods",x="Region") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
   scale_x_discrete(limits=c("Caribbean","Pacific"),labels=c("Caribbean\n(Bocas del Toro)","Pacific\n(Gulf of Panama)"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
@@ -870,9 +877,9 @@ figS10
 
 Save output (fig. S10).
 
-```{r fig.height=3}
+```{r}
 
-#ggsave("figures/figS10.pdf",plot=figS10,device="pdf",useDingbats=FALSE)
+#ggsave("figures/figS10.pdf",plot=figS10,device="pdf",useDingbats=FALSE,height=7)
 
 ```
 
@@ -927,7 +934,7 @@ figS2
 
 Save output (fig. S2).
 
-```{r fig.height=7,fig.width=7}
+```{r}
 
 #ggsave("figures/figS2.pdf",plot=figS2,device="pdf",useDingbats=FALSE,height=12,width=12)
 
@@ -947,7 +954,7 @@ ggplot(aes(x=age_AD_BC, y=age_group))+
   geom_rect(xmin=-5200,xmax=-3700,ymin=0.7,ymax=0.9,fill='darkgoldenrod2',alpha=0.05)+
   theme_bw()+
   labs(x="Sample age (CE/BCE)",y="Time period") +
-  scale_y_discrete(limits=c("pre_exp","modern"),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_y_discrete(limits=c("pre_exp","modern"),labels=c("Pre-exploitation","Recent"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
   theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
@@ -969,7 +976,7 @@ Save output (fig. S3).
 
 Temporal resolution of data.
 
-```{r fig.width=4}
+```{r}
 
 #by region & time period
 region_time_means <- dd_pan_age_clean %>% 
@@ -985,7 +992,7 @@ figS4A <- ggplot(region_time_means,aes(x=region, y=mean_years, shape=age_group))
   theme_bw()+
   labs(y="Number of years per sample",x="Region",fill="Region",shape="Time period") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_x_discrete(limits=c("Bocas del Toro","Gulf of Panama"),labels=c("Caribbean\n(Bocas del Toro)","Pacific\n(Gulf of Panama)"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1011,7 +1018,7 @@ figS4B <- ggplot(site_time_means,aes(x=site_name, y=mean_years, shape=age_group)
   theme_bw()+
   labs(y="",x="Site",fill="Region",shape="Time period") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_x_discrete(limits=c("Sweet Bocas","Casa Blanca","Cayo Adriana","Punta Donato","Isla Iguana","Saboga","Contadora"),labels=c("Sweet\nBocas","Casa\nBlanca","Cayo\nAdriana","Punta\nDonato","Isla\nIguana","Saboga","Contadora"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1027,7 +1034,7 @@ figS4B
 
 Combine and save output (fig. S4).
 
-```{r fig.width=5}
+```{r}
 
 figS4 <- figS4A+figS4B+
   plot_annotation(tag_levels = 'A')&
@@ -1037,7 +1044,7 @@ figS4
 
 
 #save output
-#ggsave("figures/figS4.png",plot=figS4,device="png")
+#ggsave("figures/figS4.png",plot=figS4,device="png",width=12)
 
 ```
 
@@ -1062,17 +1069,17 @@ denticle_means
 
 Denticle counts (fig. S5A)
 
-```{r fig.height=3}
+```{r}
 
 figS5A <- ggplot(dd_pan_age_clean, aes(x=total_dd_count, y=site_name, shape=age_group,fill=region)) +
   geom_vline(xintercept=denticle_means$mean_count[2],color="deepskyblue3",linetype=2,linewidth=0.8)+
   geom_vline(xintercept=denticle_means$mean_count[1],color="darkgoldenrod2",linetype=2,linewidth=0.8)+
-  geom_point(alpha=0.4,size=2.5,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70",fill="gray70")+
+  geom_point(aes(fill=region),alpha=0.4,size=2.5,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70")+
   geom_boxplot(aes(fill=region),alpha=0.8,outlier.shape = NA,width=0.2,position=position_dodge(width = 0.7))+
   theme_bw()+
   labs(x="Number of denticles",y="Site",shape="Time period",fill="Region") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_y_discrete(limits=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"),labels=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1088,17 +1095,17 @@ figS5A
 
 Denticle abundances (fig. S5B)
 
-```{r fig.height=3}
+```{r}
 
 figS5B <- ggplot(dd_pan_age_clean, aes(x=dd_kg, y=site_name, shape=age_group,fill=region)) +
   geom_vline(xintercept=denticle_means$mean_abundance[2],color="deepskyblue3",linetype=2,linewidth=0.8)+
   geom_vline(xintercept=denticle_means$mean_abundance[1],color="darkgoldenrod2",linetype=2,linewidth=0.8)+
-  geom_point(alpha=0.4,size=2.5,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70",fill="gray70")+
+  geom_point(aes(fill=region),alpha=0.4,size=2.5,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70")+
   geom_boxplot(aes(fill=region),alpha=0.8,outlier.shape = NA,width=0.2,position=position_dodge(width = 0.7))+
   theme_bw()+
   labs(x="Denticles per kg sediment",y="",shape="Time period",fill="Region") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_y_discrete(limits=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"),labels=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1114,17 +1121,17 @@ figS5B
 
 Denticle accumulations (fig. S5C)
 
-```{r fig.height=3}
+```{r}
 
 figS5C <- ggplot(dd_pan_age_clean, aes(x=(total_dd_count/sed_weight_kg/no_years)*100, y=site_name, shape=age_group,fill=region)) +
   geom_vline(xintercept=denticle_means$mean_accumulation[2],color="deepskyblue3",linetype=2,linewidth=0.8)+
   geom_vline(xintercept=denticle_means$mean_accumulation[1],color="darkgoldenrod2",linetype=2,linewidth=0.8)+
-  geom_point(alpha=0.4,size=2.5,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70",fill="gray70")+
+  geom_point(aes(fill=region),alpha=0.4,size=2.5,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70")+
   geom_boxplot(aes(fill=region),alpha=0.8,outlier.shape = NA,width=0.2,position=position_dodge(width = 0.7))+
   theme_bw()+
   labs(x="Denticles per kg sediment\nper century",y="",shape="Time period",fill="Region") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_y_discrete(limits=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"),labels=c("Contadora","Saboga","Isla Iguana","Sweet Bocas","Punta Donato","Cayo Adriana","Casa Blanca"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1140,7 +1147,7 @@ figS5C
 
 Combine and save output (fig. S5).
 
-```{r fig.height=3,fig.width=8,warning=F}
+```{r fig.width=16, warning=F}
 
 figS5 <- figS5A+figS5B+figS5C+
   plot_annotation(tag_levels = 'A')&
@@ -1150,7 +1157,7 @@ figS5
 
 
 #save output
-#ggsave("figures/figS5.pdf",plot=figS5,device="pdf",useDingbats=FALSE)
+#ggsave("figures/figS5.pdf",plot=figS5,device="pdf",useDingbats=FALSE,width=16,height=7)
 
 ```
 
@@ -1158,16 +1165,17 @@ figS5
 
 Model predictions vs. raw data, with time uncertainty visualized.
 
-```{r fig.height=3}
+```{r}
 
 figS7 <- ggplot(ef_pan_df, aes(x=region, y=fit,shape=age_group)) +
-  geom_linerange(data=dd_pan_age_clean,aes(y=((total_dd_count/sed_weight_kg/no_years)*100),ymin=((total_dd_count/sed_weight_kg/no_years_75)*100),ymax=((total_dd_count/sed_weight_kg/no_years_25)*100)),position=position_jitterdodge(jitter.width=0.6,seed=10),linetype="solid",alpha=0.4,color="gray80")+
-  geom_point(data=dd_pan_age_clean,aes(x=region, y=(total_dd_count/sed_weight_kg/no_years)*100),alpha=0.4,size=2,position=position_jitterdodge(jitter.width=0.6,seed=10),color="gray80",fill="gray80")+
+  geom_linerange(data=dd_pan_age_clean,aes(color=region,y=((total_dd_count/sed_weight_kg/no_years)*100),ymin=((total_dd_count/sed_weight_kg/no_years_75)*100),ymax=((total_dd_count/sed_weight_kg/no_years_25)*100)),position=position_jitterdodge(jitter.width=0.6,seed=10),linetype="solid",alpha=0.4)+
+  geom_point(data=dd_pan_age_clean,aes(fill=region,color=region,x=region, y=(total_dd_count/sed_weight_kg/no_years)*100),alpha=0.4,size=2,position=position_jitterdodge(jitter.width=0.6,seed=10))+
   geom_pointrange(aes(ymin=fit-se, ymax=fit+se,shape=age_group,fill=region),color='black',fatten=4,size=1.4, position=position_jitterdodge(seed=10)) + 
   theme_bw(base_size=12)+
   labs(y="Denticle accumulation per kg sediment per century",x="Region",shape="Time period",fill="Region") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_color_manual(values=c("darkgoldenrod2","deepskyblue3"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_x_discrete(limits=c("Bocas del Toro","Gulf of Panama"),labels=c("Caribbean\n(Bocas del Toro)","Pacific\n(Gulf of Panama)"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1176,7 +1184,7 @@ figS7 <- ggplot(ef_pan_df, aes(x=region, y=fit,shape=age_group)) +
   theme(legend.position = "bottom")+
   annotation_logticks(sides="l")+
   scale_y_continuous(trans='log10')+
-  guides(fill="none")+
+  guides(fill="none",color="none")+
   theme(aspect.ratio=1.5)
 figS7
 
@@ -1186,23 +1194,23 @@ Save output (fig. S7).
 
 ```{r}
 
-#ggsave("figures/figS7.png",plot=figS7,device="png")
+#ggsave("figures/figS7.png",plot=figS7,device="png",height=7)
 
 ```
 
-### figure S14
+### figure S15
 
 Variation in sample weights.
 
-```{r fig.width=4}
+```{r}
 
-figS14 <- ggplot(dd_pan_age_clean,aes(x=region, y=sed_weight_kg, fill=region, shape=age_group))+
-  geom_point(alpha=0.4,size=2,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70",fill="gray70")+
+figS15 <- ggplot(dd_pan_age_clean,aes(x=region, y=sed_weight_kg, fill=region, shape=age_group))+
+  geom_point(aes(fill=region),alpha=0.4,size=2,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10),color="gray70")+
   geom_boxplot(aes(fill=region),alpha=0.8,outlier.shape = NA,width=0.2,position=position_dodge(width = 0.7))+
   theme_bw()+
   labs(y="Sample weight (kg)",x="Region",shape="Time period",fill="Region") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_x_discrete(limits=c("Bocas del Toro","Gulf of Panama"),labels=c("Caribbean\n(Bocas del Toro)","Pacific\n(Gulf of Panama)"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1212,29 +1220,30 @@ figS14 <- ggplot(dd_pan_age_clean,aes(x=region, y=sed_weight_kg, fill=region, sh
   scale_y_continuous(trans='log10')+
   theme(legend.position = "bottom")+
   theme(aspect.ratio=1.5)
-figS14
+figS15
+
 
 ```
 
-Save output (fig. S14).
+Save output (fig. S15).
 
-```{r fig.width=4}
+```{r}
 
-#ggsave("figures/figS14.pdf",plot=figS14,device="pdf",useDingbats=FALSE)
+#ggsave("figures/figS15.pdf",plot=figS15,device="pdf",useDingbats=FALSE,height=6)
 
 ```
 
-### figure S15
+### figure S16
 
 ```{r}
 
 #denticle counts x sediment weight
-figS15A <- ggplot(dd_pan_age_clean,aes(x=sed_weight_kg,y=total_dd_count))+
+figS16A <- ggplot(dd_pan_age_clean,aes(x=sed_weight_kg,y=total_dd_count))+
   geom_point(aes(shape=age_group,fill=region),color='gray30',alpha=0.8,size=2.5)+
   theme_bw()+
   labs(x="Sample weight (kg)",y="Number of denticles",shape="Time period",fill="Region") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
   theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
@@ -1246,16 +1255,16 @@ figS15A <- ggplot(dd_pan_age_clean,aes(x=sed_weight_kg,y=total_dd_count))+
   facet_grid(~basin,scales = "free")+
   theme(strip.background = element_rect(fill = NA, color = NA),
         strip.text = element_text(size = 16))
-figS15A
+figS16A
 
 
 #sediment weight x no_years
-figS15B <- ggplot(dd_pan_age_clean,aes(x=sed_weight_kg,y=no_years))+
+figS16B <- ggplot(dd_pan_age_clean,aes(x=sed_weight_kg,y=no_years))+
   geom_point(aes(shape=age_group,fill=region),color='gray30',alpha=0.8,size=2.5)+
   theme_bw()+
   labs(x="Sample weight (kg)",y="Number of years per sample",fill="Region",shape="Time period") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
   theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans",hjust=0.5))+
@@ -1267,23 +1276,23 @@ figS15B <- ggplot(dd_pan_age_clean,aes(x=sed_weight_kg,y=no_years))+
   facet_grid(~basin,scales = "free")+
   theme(strip.background = element_rect(fill = NA, color = NA),
         strip.text = element_text(size = 16))
-figS15B
+figS16B
 
 ```
 
-Combine and save output (fig. S15).
+Combine and save output (fig. S16).
 
-```{r fig.width=4,fig.height=4,warning=F}
+```{r warning=F}
 
-figS15 <- figS15A/figS15B+
+figS16 <- figS16A/figS16B+
   plot_layout(widths = c(3,-8,3))+
   plot_annotation(tag_levels = 'A')&
   theme(
     plot.tag = element_text(size = 18, face = "bold"))
-figS15
+figS16
 
 
 #save output
-#ggsave("figures/figS15.png",plot=figS15,device="png")
+#ggsave("figures/figS16.png",plot=figS16,device="png",width=8,height=9)
 
 ```

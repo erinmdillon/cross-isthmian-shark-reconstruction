@@ -122,7 +122,7 @@ par(mfrow=c(1,3))
 plot(density(pre_exp_intercepts), lwd=2, main="A  Intercept (pre-exploitation)",xlab="Estimate",ylab="Density")
 abline(v=fixef(m_selected)$cond[1], col="red", lwd=2, lty=2)
 
-plot(density(modern_intercepts), lwd=2, main="B  Sub-recent difference",xlab="Estimate",ylab="")
+plot(density(modern_intercepts), lwd=2, main="B  Recent difference",xlab="Estimate",ylab="")
 abline(v=fixef(m_selected)$cond[2], col="red", lwd=2, lty=2)
 
 plot(density(b_slopes), lwd=2, main="C  Sample weight coefficient",xlab="Estimate",ylab="")

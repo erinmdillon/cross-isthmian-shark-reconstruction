@@ -304,7 +304,7 @@ fig2B
 
 ```
 
-### Relative abundance by site (figure S11)
+### Relative abundance by site (figure S12)
 
 ```{r}
 
@@ -322,22 +322,22 @@ sample_sizes_func <- dd_func_pan %>%
   group_by(basin,site_name,age_group) %>%
   summarize(tot=sum(dd_count_grouped,na.rm=T)) %>% 
   unite(site_age, c("site_name","age_group"),remove=F) %>%
-  mutate(site_age=factor(site_age, levels = c("Sweet Bocas_pre_exp","Casa Blanca_modern", "Cayo Adriana_modern","Punta Donato_modern","Contadora_pre_exp","Contadora_modern","Isla Iguana_pre_exp","Isla Iguana_modern","Saboga_pre_exp","Saboga_modern"),labels=c("Sweet Bocas (pre-exploitation)","Casa Blanca (sub-recent)","Cayo Adriana (sub-recent)","Punta Donato (sub-recent)","Contadora (pre-exploitation)","Contadora (sub-recent)","Isla Iguana (pre-exploitation)","Isla Iguana (sub-recent)","Saboga (pre-exploitation)","Saboga (sub-recent)"))) %>% 
+  mutate(site_age=factor(site_age, levels = c("Sweet Bocas_pre_exp","Casa Blanca_modern", "Cayo Adriana_modern","Punta Donato_modern","Contadora_pre_exp","Contadora_modern","Isla Iguana_pre_exp","Isla Iguana_modern","Saboga_pre_exp","Saboga_modern"),labels=c("Sweet Bocas (pre-exploitation)","Casa Blanca (recent)","Cayo Adriana (recent)","Punta Donato (recent)","Contadora (pre-exploitation)","Contadora (recent)","Isla Iguana (pre-exploitation)","Isla Iguana (recent)","Saboga (pre-exploitation)","Saboga (recent)"))) %>% 
   mutate(label=paste0("N=",tot)) %>% 
   mutate(x=60,y=1)
 
 #Create variable for plotting
 summary_site_disagg <- summary_site_disagg %>%
   unite(site_age, c("site_name","age_group"),remove=F) %>% 
-  mutate(site_age=factor(site_age, levels = c("Sweet Bocas_pre_exp","Casa Blanca_modern", "Cayo Adriana_modern","Punta Donato_modern","Contadora_pre_exp","Contadora_modern","Isla Iguana_pre_exp","Isla Iguana_modern","Saboga_pre_exp","Saboga_modern"),labels=c("Sweet Bocas (pre-exploitation)","Casa Blanca (sub-recent)","Cayo Adriana (sub-recent)","Punta Donato (sub-recent)","Contadora (pre-exploitation)","Contadora (sub-recent)","Isla Iguana (pre-exploitation)","Isla Iguana (sub-recent)","Saboga (pre-exploitation)","Saboga (sub-recent)")))
+  mutate(site_age=factor(site_age, levels = c("Sweet Bocas_pre_exp","Casa Blanca_modern", "Cayo Adriana_modern","Punta Donato_modern","Contadora_pre_exp","Contadora_modern","Isla Iguana_pre_exp","Isla Iguana_modern","Saboga_pre_exp","Saboga_modern"),labels=c("Sweet Bocas (pre-exploitation)","Casa Blanca (recent)","Cayo Adriana (recent)","Punta Donato (recent)","Contadora (pre-exploitation)","Contadora (recent)","Isla Iguana (pre-exploitation)","Isla Iguana (recent)","Saboga (pre-exploitation)","Saboga (recent)")))
 
 ```
 
 Plot.
 
-```{r fig.width=5}
+```{r}
 
-figS11 <- ggplot(summary_site_disagg, aes(y=morph, x=abund_mean,fill=basin))+
+figS12 <- ggplot(summary_site_disagg, aes(y=morph, x=abund_mean,fill=basin))+
   geom_bar(stat="identity",position="dodge",linewidth=1,alpha=0.8)+
   geom_errorbarh(aes(xmin=abund_mean-abund_stderr, xmax=abund_mean+abund_stderr), height=.2,
                  position=position_dodge(.9),color="gray30",linetype=1,size=0.6)+
@@ -356,15 +356,15 @@ figS11 <- ggplot(summary_site_disagg, aes(y=morph, x=abund_mean,fill=basin))+
   facet_wrap(~site_age)+
   theme(strip.background = element_rect(fill = NA, color = NA),
         strip.text = element_text(size = 8.5))
-figS11
+figS12
 
 ```
 
 Save output (fig. S11).
 
-```{r fig.width=5}
+```{r}
 
-#ggsave("figures/figS11.png",plot=figS11,device="png",width=10)
+#ggsave("figures/figS12.png",plot=figS12,device="png",width=10)
 
 ```
 
@@ -441,9 +441,9 @@ df_combined_disagg_horn <- df_combined_disagg_horn %>%
     group=="Pacific_modern" ~ "Pacific",
     group=="Pacific_pre_exp" ~ "Pacific")) %>% 
   mutate(age_group = case_when(
-    group=="Caribbean_modern" ~ "Sub-recent",
+    group=="Caribbean_modern" ~ "Recent",
     group=="Caribbean_pre_exp" ~ "Pre-exploitation",
-    group=="Pacific_modern" ~ "Sub-recent",
+    group=="Pacific_modern" ~ "Recent",
     group=="Pacific_pre_exp" ~ "Pre-exploitation"))
 
 ```
@@ -462,7 +462,7 @@ spp_scrs_disagg <- cbind(spp_scrs_disagg, Morph = rownames(spp_scrs_disagg))
 
 Create formatted NMDS for main figure.
 
-```{r fig.width=4}
+```{r}
 
 fig2C <- ggplot(nmds_df_comp_disagg, aes(x = MDS1, y = MDS2)) +
   geom_hline(yintercept=0, color="gray60")+
@@ -502,7 +502,7 @@ Save output (Fig. 2C).
 
 ```
 
-### NMDS run separately by region (figure S12)
+### NMDS run separately by region (figure S13)
 
 Caribbean
 
@@ -544,11 +544,11 @@ for(g in levels(NMDS_carib$group)){
 #Add column for age group
 df_carib_horn <- df_carib_horn %>%
   mutate(age_group = case_when(
-    group=="modern" ~ "Sub-recent",
+    group=="modern" ~ "Recent",
     group=="pre_exp" ~ "Pre-exploitation"))
 
 #Relevel
-levels(nmds_carib_df$age_group) <- c("Pre-exploitation","Sub-recent")
+levels(nmds_carib_df$age_group) <- c("Pre-exploitation","Recent")
 
 
 #Calculate vectors
@@ -563,7 +563,7 @@ spp_scrs_carib <- cbind(spp_scrs_carib, Morph = rownames(spp_scrs_carib))
 ```{r}
 
 #Plot
-figS12A <- ggplot(nmds_carib_df, aes(x = MDS1, y = MDS2)) +
+figS13A <- ggplot(nmds_carib_df, aes(x = MDS1, y = MDS2)) +
   geom_hline(yintercept=0, color="gray60")+
   geom_vline(xintercept=0, color="gray60")+
   geom_point(aes(shape=age_group),color="darkgoldenrod2",size = 4, alpha = 0.6)+
@@ -586,7 +586,7 @@ figS12A <- ggplot(nmds_carib_df, aes(x = MDS1, y = MDS2)) +
   theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans"))+
   theme(legend.position="bottom")+
   theme(aspect.ratio=1)
-figS12A
+figS13A
 
 ```
 
@@ -630,11 +630,11 @@ for(g in levels(NMDS_pac$group)){
 #Add column for age group
 df_pac_horn <- df_pac_horn %>% 
   mutate(age_group = case_when(
-    group=="modern" ~ "Sub-recent",
+    group=="modern" ~ "Recent",
     group=="pre_exp" ~ "Pre-exploitation"))
 
 #Relevel
-levels(nmds_pac_df$age_group) <- c("Pre-exploitation","Sub-recent")
+levels(nmds_pac_df$age_group) <- c("Pre-exploitation","Recent")
 
 
 #Calculate vectors
@@ -649,7 +649,7 @@ spp_scrs_pac <- cbind(spp_scrs_pac, Morph = rownames(spp_scrs_pac))
 ```{r}
 
 #Plot
-figS12B <- ggplot(nmds_pac_df, aes(x = MDS1, y = MDS2)) +
+figS13B <- ggplot(nmds_pac_df, aes(x = MDS1, y = MDS2)) +
   geom_hline(yintercept=0, color="gray60")+
   geom_vline(xintercept=0, color="gray60")+
   geom_point(aes(shape=age_group),color="deepskyblue3",size = 4, alpha = 0.6)+
@@ -672,19 +672,19 @@ figS12B <- ggplot(nmds_pac_df, aes(x = MDS1, y = MDS2)) +
   theme(axis.text=element_text(color="black",family="sans"),axis.title= element_text(color="black",family="sans"))+
   theme(legend.position="bottom")+
   theme(aspect.ratio=1)
-figS12B
+figS13B
 
 ```
 
-Combine and save output (fig S12).
+Combine and save output (fig S13).
 
-```{r fig.width=4}
+```{r}
 
-figS12 <- figS12A+figS12B
-figS12
+figS13 <- figS13A+figS13B
+figS13
 
 #save output
-#ggsave("figures/figS12.pdf",plot=figS12,device="pdf",useDingbats=FALSE)
+#ggsave("figures/figS13.pdf",plot=figS13,device="pdf",useDingbats=FALSE,width=10)
 
 ```
 
@@ -732,6 +732,8 @@ dd_pan_wide_carib_disagg <- dd_pan_wide_disagg %>%
 dis_mat_carib_disagg <- vegdist(dd_pan_wide_carib_disagg[,9:15],method="horn")
 
 adonis2(dis_mat_carib_disagg~dd_pan_wide_carib_disagg$age_group + dd_pan_wide_carib_disagg$site_name,permutations=9999) 
+
+adonis2(dis_mat_carib_disagg~dd_pan_wide_carib_disagg$age_group,permutations=9999)
 
 
 #Testing dispersion assumptions
@@ -1161,16 +1163,16 @@ ef_pan_df_lifemode <- rbind(ef_pac_df_pelagic,ef_pac_df_demersal,ef_carib_df_pel
 
 ```
 
-### figure S13
+### figure S14
 
-```{r fig.height=3}
+```{r}
 
-figS13 <- ggplot(ef_pan_df_lifemode, aes(x=life_mode, y=fit,shape=age_group,fill=basin)) +
+figS14 <- ggplot(ef_pan_df_lifemode, aes(x=life_mode, y=fit,shape=age_group,fill=basin)) +
   geom_pointrange(aes(ymin=fit-se, ymax=fit+se,shape=age_group,fill=basin),color='black',fatten=4,size=1.5, position=position_jitterdodge(seed=10)) + 
   theme_bw()+
   labs(y="Denticle accumulation per kg sediment per century",x="Ecological group",shape="Time period",fill="Region") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_x_discrete(limits=c("Pelagic","Demersal"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1182,16 +1184,16 @@ figS13 <- ggplot(ef_pan_df_lifemode, aes(x=life_mode, y=fit,shape=age_group,fill
   facet_wrap(~basin,scales="free")+
   theme(strip.background = element_rect(fill = NA, color = NA),
         strip.text = element_text(size = 16))
-figS13
+figS14
 
 
 ```
 
 Save output (fig S13)
 
-```{r fig.height=3}
+```{r}
 
-#ggsave("figures/figS13.png",plot=figS13,device="png",width=10)
+#ggsave("figures/figS14.png",plot=figS14,device="png",width=10)
 
 ```
 
@@ -1285,7 +1287,7 @@ taph_summ <- taph_age %>%
 
 Across regions (fig. S8A).
 
-```{r fig.width=4}
+```{r}
 
 figS8A <- ggplot(taph_summ,aes(x=region, y=mean_weathering, fill=region, shape=age_group))+
   geom_point(aes(shape=age_group),color="gray70",fill="gray70",alpha=0.4,size=2,position=position_jitterdodge(jitter.width=0.5,dodge.width=0.7,seed=10))+
@@ -1307,7 +1309,7 @@ figS8A
 
 Across sites (fig. S8B).
 
-```{r fig.width=4}
+```{r}
 
 #Regional means
 regional_weathering_means <- taph_summ %>%
@@ -1340,7 +1342,7 @@ figS8B <- ggplot(site_taph_means,aes(x=site_name, y=mean_score, shape=age_group)
   theme_bw()+
   labs(y="Weathering score",x="Site",fill="Region",shape="Time period") +
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_x_discrete(limits=c("Sweet Bocas","Casa Blanca","Cayo Adriana","Punta Donato","Isla Iguana","Saboga","Contadora"),labels=c("Sweet\nBocas","Casa\nBlanca","Cayo\nAdriana","Punta\nDonato","Isla\nIguana","Saboga","Contadora"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1373,7 +1375,7 @@ ggplot(aes(x=func_morph, y=mean_score,shape=age_group))+
 geom_pointrange(aes(ymin=mean_score-sd_score, ymax=mean_score+sd_score,shape=age_group),fill="gray50",color='black',fatten=3.5,size=1.5, position=position_jitterdodge(seed=10)) +
   theme_bw()+
   labs(y="Weathering score",x="Functional morphotype",shape="Time period") +
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   scale_x_discrete(limits=c("DR","RA","A","GF","DEFENSE"),labels=c("Drag","Abrasion","Ridged\nAbrasion","Gen\nFunc","Defense"))+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1389,7 +1391,7 @@ figS8C
 
 Combine and save output (fig. S8).
 
-```{r fig.width=6}
+```{r}
 
 figS8 <- (figS8A+figS8B+figS8C)+
   plot_annotation(tag_levels = 'A')&
@@ -1398,7 +1400,7 @@ figS8 <- (figS8A+figS8B+figS8C)+
 figS8
 
 #save output
-#ggsave("figures/figS8.pdf",plot=figS8,device="pdf",useDingbats=FALSE)
+#ggsave("figures/figS8.pdf",plot=figS8,device="pdf",useDingbats=FALSE,width=14)
 
 ```
 
@@ -1412,7 +1414,7 @@ figS9A <- ggplot(taph_summ, aes(y=mean_weathering,x=dd_kg))+
   geom_point(aes(fill=basin, shape=age_group),color='gray30',size=2.5,alpha=0.8)+
   labs(y="Weathering score",x="Denticles per kg sediment",shape="Time period",fill="Region")+
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   theme_bw()+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1439,7 +1441,7 @@ figS9B <- taph_summ %>%
   geom_point(aes(fill=basin, shape=age_group),color='gray30',size=2.5,alpha=0.8)+
   labs(y="Weathering score",x="Number of years per sample",shape="Time period",fill="Region")+
   scale_fill_manual(values=c("darkgoldenrod2","deepskyblue3"))+
-  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Sub-recent"))+
+  scale_shape_manual(values=c(21,24),labels=c("Pre-exploitation","Recent"))+
   theme_bw()+
   theme(axis.text = element_text(size=12),axis.title= element_text(size=16))+
   theme(legend.text = element_text(size=12),legend.title = element_text(size=16))+
@@ -1459,7 +1461,7 @@ figS9B
 
 Combine and save output (fig. S9).
 
-```{r fig.width=4,fig.height=4,warning=F}
+```{r warning=F}
 
 figS9 <- figS9A/figS9B+
   plot_layout(widths = c(3,-8,3))+
@@ -1469,6 +1471,6 @@ figS9 <- figS9A/figS9B+
   figS9
 
 #save output
-#ggsave("figures/figS9.png",plot=figS9,device="png")
+#ggsave("figures/figS9.png",plot=figS9,device="png",width=8,height=9)
 
 ```
