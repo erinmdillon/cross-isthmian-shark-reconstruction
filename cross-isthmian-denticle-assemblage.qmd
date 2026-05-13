@@ -360,7 +360,7 @@ figS12
 
 ```
 
-Save output (fig. S11).
+Save output (fig. S12).
 
 ```{r}
 
@@ -1189,7 +1189,7 @@ figS14
 
 ```
 
-Save output (fig S13)
+Save output (fig S14)
 
 ```{r}
 
